@@ -1,3 +1,2 @@
 # SteamWishlistDiscordBot
 
-a b
