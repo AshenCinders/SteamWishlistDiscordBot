@@ -5,7 +5,7 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   ignorePatterns: [".eslintrc.js", "jest.config.js", "*.js"],
   rules: {
-    'no-empty':'on',
+    'no-empty':'on', // Force else clauses to be non-empty
     'no-unused-vars':'off'
   },
   parser: '@typescript-eslint/parser',
