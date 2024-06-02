@@ -1,5 +1,6 @@
 // File handling fetching a user's Steam whitelist.
 
+// ONLY SUPPORTS steam64 from universe1 (public) as well as unique name IDs.
 // For further reading regarding SteamIDs:
 // https://developer.valvesoftware.com/wiki/SteamID
 
@@ -63,4 +64,19 @@ function steamIdentifierToURL(
           (prefix = 'https://store.steampowered.com/wishlist/id/');
 
     return prefix + steam64OrUniqueName + '/wishlistdata/';
+}
+
+/**
+ * Checks if a string has the correct form for a steam64 ID.
+ * It does NOT look up if an account with the ID exists.
+ * @example isValidSteam64('11112222333344445'); returns true.
+ * @param inputString from user.
+ * @returns true if valid, false if invalid.
+ */
+function isValidSteam64(inputString: string): boolean {
+    return !/^\d*$/.test(inputString)
+        ? false
+        : inputString.length !== 17
+          ? false
+          : true;
 }
