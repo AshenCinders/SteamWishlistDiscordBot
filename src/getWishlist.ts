@@ -25,7 +25,7 @@ type SteamWhitelistRecord = Record<SteamRecGameID, SteamRecGameData>;
 async function fetchFromSteam(
     url: string
 ): Promise<SteamWhitelistRecord | boolean> {
-    const whitelistAsRecord: SteamWhitelistRecord | false = await fetch(url)
+    const whitelistAsRecord = await fetch(url)
         .then((res) => {
             if (res.ok) return res.json();
             throw new Error('Failed to fetch from Steam');
@@ -35,7 +35,7 @@ async function fetchFromSteam(
             return false;
         });
     //console.log(whitelistAsRecord);
-    return whitelistAsRecord;
+    return whitelistAsRecord as SteamWhitelistRecord | false;
 }
 
 /**
