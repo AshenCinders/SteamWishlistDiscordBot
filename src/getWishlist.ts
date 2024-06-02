@@ -14,9 +14,11 @@ type SteamRecGameData = {
 type SteamWhitelistRecord = Record<SteamRecGameID, SteamRecGameData>;
 
 /**
- * Takes a valid withlist API url and gets
+ * Takes a valid withlist API url and gets whitelist data from Steam.
+ * @example const wishlist = fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
+ *  returns a SteamWhitelistRecord.
  * @param url is the correct link to get a user's Steam whitelist.
- * @invariant The url must be valid.
+ * @precondition The url must be a valid fetch link.
  * @returns A Record containing game-ids with game-data records,
  *  or false if failed to fetch.
  */
@@ -36,8 +38,6 @@ async function fetchFromSteam(
     return whitelistAsRecord;
 }
 
-//fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
-
 /**
  * Constructs the correct Steam url based on inputted steam64
  *  or custom name id.
@@ -48,6 +48,7 @@ async function fetchFromSteam(
  * @param steam64OrUniqueName Either a steam64 in string form, or a
  *  unique identifier sometimes used by distinguished accounts such as 'St4ck'.
  * @param isSteam64 True if steam64OrUniqueName, false if unique name id.
+ * @precondition steam64OrUniqueName must be a valid steam64 or ID.
  * @returns a steam url string for fetching wishlist data.
  */
 function steamIdentifierToURL(
