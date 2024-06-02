@@ -19,6 +19,7 @@ type SteamWishlistRecord = Record<SteamRecGameID, SteamRecGameData>;
  * @example const wishlist = fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
  *  returns a SteamWishlistRecord.
  * @param url is the correct link to get a user's Steam wishlist.
+ * @precondition The url must be a valid fetch link, the account need not exist.
  * @returns A Record containing game-ids with game-data records,
  *  or false if failed to fetch.
  */
@@ -28,7 +29,7 @@ async function fetchFromSteam(
     const wishlistAsRecord = await fetch(url)
         .then((res) => {
             if (res.ok) return res.json();
-            throw new Error('Failed to fetch from Steam');
+            else throw new Error('Failed to fetch from Steam website');
         })
         .catch((err) => {
             console.log(err);
@@ -48,7 +49,7 @@ async function fetchFromSteam(
  * @param steam64OrUniqueName Either a steam64 in string form, or a
  *  unique identifier sometimes used by distinguished accounts such as 'St4ck'.
  * @param isSteam64 True if steam64OrUniqueName, false if unique name id.
- * @precondition steam64OrUniqueName must be a valid steam64 or ID.
+ * @precondition steam64OrUniqueName must be a valid steam64 or ID format.
  * @returns a steam url string for fetching wishlist data.
  */
 function steamIdentifierToURL(
