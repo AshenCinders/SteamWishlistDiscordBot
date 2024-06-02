@@ -37,3 +37,29 @@ async function fetchFromSteam(
 }
 
 //fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
+
+/**
+ * Constructs the correct Steam url based on inputted steam64
+ *  or custom name id.
+ * @example const a = steamIdentifierToURL('76561111111111111', true);
+ *  returns 'https://store.steampowered.com/wishlist/profiles/76561111111111111/wishlistdata/'
+ * @example const b = steamIdentifierToURL('St4ck', false);
+ *  returns 'https://store.steampowered.com/wishlist/id/St4ck/wishlistdata/'
+ * @param steam64OrUniqueName Either a steam64 in string form, or a
+ *  unique identifier sometimes used by distinguished accounts such as 'St4ck'.
+ * @param isSteam64 True if steam64OrUniqueName, false if unique name id.
+ * @returns a steam url string for fetching wishlist data.
+ */
+function steamIdentifierToURL(
+    steam64OrUniqueName: string,
+    isSteam64: boolean
+): string {
+    let prefix: string;
+    isSteam64
+        ? // Fetch only works if steam64 is combined with this prefix.
+          (prefix = 'https://store.steampowered.com/wishlist/profiles/')
+        : // Fetch only works if cusom name such as 'St4ck' is combined with this prefix.
+          (prefix = 'https://store.steampowered.com/wishlist/id/');
+
+    return prefix + steam64OrUniqueName + '/wishlistdata/';
+}
