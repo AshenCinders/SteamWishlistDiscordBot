@@ -80,3 +80,19 @@ function isValidSteam64(inputString: string): boolean {
           ? false
           : true;
 }
+
+/**Checks if a string has the correct form for a Steam custom URL name.
+ * It does NOT look up of an account with the name exists.
+ * @example isValidSteamUniqueID('St4ck'); returns true.
+ * @param inputString from user.
+ * @returns true if valid, false if invalid.
+ */
+function isValidSteamUniqueID(inputString: string): boolean {
+    return !/^[A-Za-z0-9_.~-]*$/.test(inputString)
+        ? false
+        : inputString.length < 3
+          ? false
+          : inputString.length > 32
+            ? false
+            : true;
+}
