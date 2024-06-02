@@ -1,4 +1,4 @@
-// File handling fetching a user's Steam whitelist.
+// File handling fetching a user's Steam wishlist.
 
 // ONLY SUPPORTS steam64 from universe1 (public) as well as unique name IDs.
 // For further reading regarding SteamIDs:
@@ -12,21 +12,20 @@ type SteamRecGameData = {
     priority: number; // User/default priority list ordering.
 };
 // Each entry represents a game.
-type SteamWhitelistRecord = Record<SteamRecGameID, SteamRecGameData>;
+type SteamWishlistRecord = Record<SteamRecGameID, SteamRecGameData>;
 
 /**
- * Takes a valid withlist API url and gets whitelist data from Steam.
+ * Takes a valid withlist API url and gets wishlist data from Steam.
  * @example const wishlist = fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
- *  returns a SteamWhitelistRecord.
- * @param url is the correct link to get a user's Steam whitelist.
- * @precondition The url must be a valid fetch link.
+ *  returns a SteamWishlistRecord.
+ * @param url is the correct link to get a user's Steam wishlist.
  * @returns A Record containing game-ids with game-data records,
  *  or false if failed to fetch.
  */
 async function fetchFromSteam(
     url: string
-): Promise<SteamWhitelistRecord | boolean> {
-    const whitelistAsRecord = await fetch(url)
+): Promise<SteamWishlistRecord | boolean> {
+    const wishlistAsRecord = await fetch(url)
         .then((res) => {
             if (res.ok) return res.json();
             throw new Error('Failed to fetch from Steam');
@@ -35,8 +34,8 @@ async function fetchFromSteam(
             console.log(err);
             return false;
         });
-    //console.log(whitelistAsRecord);
-    return whitelistAsRecord as SteamWhitelistRecord | false;
+    //console.log(wishlistAsRecord);
+    return wishlistAsRecord as Promise<SteamWishlistRecord | boolean>;
 }
 
 /**
