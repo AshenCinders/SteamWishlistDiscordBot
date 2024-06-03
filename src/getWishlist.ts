@@ -99,7 +99,8 @@ function isValidSteamUniqueID(inputString: string): boolean {
 
 /**
  * Called when a new/updated Steam Wishlist is to be fetched.
- * @param userInput string that is yet to be validated, but must be a string.
+ * @param userInput is the steam64/nameID string which may not be validated,
+ *  but must be a string.
  * @returns a SteamWishlistRecord if fetch succeeds. If fetch fails or
  *  input validation fails, false will be returned.
  */
