@@ -25,7 +25,7 @@ type SteamWishlistRecord = Record<SteamRecGameID, SteamRecGameData>;
  */
 async function fetchFromSteam(
     url: string
-): Promise<SteamWishlistRecord | boolean> {
+): Promise<SteamWishlistRecord | false> {
     const wishlistAsRecord = await fetch(url)
         .then((res) => {
             if (res.ok) return res.json();
@@ -36,7 +36,7 @@ async function fetchFromSteam(
             return false;
         });
     //console.log(wishlistAsRecord);
-    return wishlistAsRecord as Promise<SteamWishlistRecord | boolean>;
+    return wishlistAsRecord as Promise<SteamWishlistRecord | false>;
 }
 
 /**
