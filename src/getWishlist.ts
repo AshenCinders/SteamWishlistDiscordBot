@@ -32,7 +32,7 @@ async function fetchFromSteam(
             else throw new Error('Failed to fetch from Steam website');
         })
         .catch((err) => {
-            console.log(err);
+            //console.log(err);
             return false;
         });
     //console.log(wishlistAsRecord);
