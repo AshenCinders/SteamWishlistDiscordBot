@@ -96,3 +96,22 @@ function isValidSteamUniqueID(inputString: string): boolean {
             ? false
             : true;
 }
+
+export function newWishlistRecord(
+    userInput: string
+): SteamWishlistRecord | false {
+    let validURL: string;
+    if (isValidSteam64(userInput))
+        validURL = steamIdentifierToURL(userInput, true);
+    else if (isValidSteamUniqueID(userInput))
+        validURL = steamIdentifierToURL(userInput, false);
+    else return false;
+
+    /* Conversion of type 'Promise<false | SteamWishlistRecord>' to type 
+    'false | SteamWishlistRecord' may be a mistake because neither type 
+    sufficiently overlaps with the other. */
+    const wishlistOrFalse = fetchFromSteam(validURL) as unknown as Awaited<
+        Promise<SteamWishlistRecord | false>
+    >;
+    return wishlistOrFalse;
+}
