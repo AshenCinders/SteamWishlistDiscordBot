@@ -5,3 +5,5 @@ package.json
 jest.config.js
 coverage
 tsconfig.json
+
+.env
