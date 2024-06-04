@@ -1,7 +1,6 @@
 node_modules/
 package-lock.json
 
-package.json
 jest.config.js
 coverage
 tsconfig.json

@@ -1,0 +1,23 @@
+{
+    "scripts": {
+        "start": "ts-node src/bot",
+        "test": "jest",
+        "tests": "jest",
+        "dev": "eslint && ts-node src/bot -p -e"
+    },
+    "devDependencies": {
+        "@eslint/js": "^8.56.0",
+        "@types/jest": "^29.5.12",
+        "@typescript-eslint/eslint-plugin": "^7.11.0",
+        "@typescript-eslint/parser": "^7.11.0",
+        "eslint": "^8.56.0",
+        "globals": "^15.3.0",
+        "prettier": "3.3.0",
+        "ts-jest": "^29.1.4",
+        "typescript-eslint": "^7.11.0"
+    },
+    "dependencies": {
+        "discord.js": "^14.15.3",
+        "dotenv": "^16.4.5"
+    }
+}
