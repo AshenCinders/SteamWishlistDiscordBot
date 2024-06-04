@@ -1,3 +1,6 @@
+// Bot startup sequence courtesy of The Coding Train.
+// https://www.youtube.com/@TheCodingTrain
+
 import { Client, Events, GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
 
