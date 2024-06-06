@@ -17,7 +17,7 @@ export type SteamWLRecGameData = {
     tags: Array<string>; // E.g. [ 'Co-op', 'Management', 'Cooking', 'Roguelite', 'Building' ]
 };
 // Each entry represents a game.
-type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
+export type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
 
 /**
  * Takes a valid withlist API url and gets wishlist data from Steam.

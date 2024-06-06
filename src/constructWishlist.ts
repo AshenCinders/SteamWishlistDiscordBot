@@ -1,4 +1,8 @@
-import { SteamWLRecGameID, SteamWLRecGameData } from './getWishlistData';
+import {
+    SteamWLRecGameID,
+    SteamWLRecGameData,
+    SteamWLRecord,
+} from './getWishlistData';
 
 export type WLGameRec = {
     appid: number;
@@ -36,7 +40,7 @@ function newWLGameRecTemplate(): WLGameRec {
 /**
  * Sets appid (number) based on the appid key string from Steam.
  * @param appid raw key string for a wishlist game object fetched from Steam.
- * @param target the target WhitelistArr element.
+ * @param target the target WishlistArr element.
  */
 function setAppid(appid: string, target: WLGameRec): void {
     target.appid = Number(appid);
@@ -98,4 +102,24 @@ function constructWLElem(
     setAddedToWLUnix(rawData, newElem);
 
     return newElem;
+}
+
+/**
+ * Created a new sorted wishlist array
+ *  that is sorted based on user WL ranking priority.
+ * @param wlFetchData is a JS object containing wishlist data from Steam.
+ * @returns An array with each element as a WLGameRec.
+ */
+export function constructWishlistArray(
+    wlFetchData: SteamWLRecord
+): WishlistArr {
+    let wlArr: WishlistArr = [];
+
+    for (const gameKey in wlFetchData) {
+        wlArr.push(constructWLElem(gameKey, wlFetchData[gameKey]));
+    }
+
+    // TODO sort based on prio
+
+    return wlArr;
 }
