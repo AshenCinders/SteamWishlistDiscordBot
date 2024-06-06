@@ -11,4 +11,4 @@ export type WLGameRec = {
     addedToWLUnix: number;
 };
 
-export type WhitelistArr = Array<WLGameRec>;
+export type WishlistArr = Array<WLGameRec>;
