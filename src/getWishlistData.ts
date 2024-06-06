@@ -10,6 +10,11 @@ type SteamWLRecGameID = string; // Steam game ID which is a number in string for
 export type SteamWLRecGameData = {
     name: string; // Game title.
     priority: number; // User/default priority list ordering.
+    review_desc: string; // E.g. 'Mostly Positive'
+    release_date: string; // Unix time in string form
+    release_string: string; // E.g. '4 Aug, 2022'
+    added: number; // Unix time of when user added to WL
+    tags: Array<string>; // E.g. [ 'Co-op', 'Management', 'Cooking', 'Roguelite', 'Building' ]
 };
 // Each entry represents a game.
 type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
