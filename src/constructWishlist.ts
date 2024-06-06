@@ -75,3 +75,27 @@ function setReleaseDateFormatted(
 function setAddedToWLUnix(source: SteamWLRecGameData, target: WLGameRec): void {
     target.addedToWLUnix = source.added;
 }
+
+/**
+ * Construction function for a new element in a wishlist array.
+ * @param rawData is raw wishlist game data fetched from steam WL.
+ *  It is the data for a single game.
+ * @returns An element for a wishlist array.
+ */
+function constructWLElem(
+    appidString: SteamWLRecGameID,
+    rawData: SteamWLRecGameData
+): WLGameRec {
+    const newElem = newWLGameRecTemplate();
+
+    setAppid(appidString, newElem);
+    setPriority(rawData, newElem);
+    setName(rawData, newElem);
+    setTags(rawData, newElem);
+    setReviewGrade(rawData, newElem);
+    setReleaseDateUnix(rawData, newElem);
+    setReleaseDateFormatted(rawData, newElem);
+    setAddedToWLUnix(rawData, newElem);
+
+    return newElem;
+}
