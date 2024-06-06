@@ -1,3 +1,5 @@
+import { SteamWLRecGameData } from './getWishlistData';
+
 export type WLGameRec = {
     appid: string;
     priority: number;
@@ -27,4 +29,38 @@ function newWLGameRecTemplate(): WLGameRec {
         releaseDateFormatted: '',
         addedToWLUnix: 0,
     };
+}
+
+function setPriority(source: SteamWLRecGameData, target: WLGameRec): void {
+    target.priority = source.priority;
+}
+
+function setName(source: SteamWLRecGameData, target: WLGameRec): void {
+    target.name = source.name;
+}
+
+function setTags(source: SteamWLRecGameData, target: WLGameRec): void {
+    target.tags = source.tags;
+}
+
+function setReviewGrade(source: SteamWLRecGameData, target: WLGameRec): void {
+    target.reviewGrade = source.review_desc;
+}
+
+function setReleaseDateUnix(
+    source: SteamWLRecGameData,
+    target: WLGameRec
+): void {
+    target.releaseDateUnix = Number(source.release_date);
+}
+
+function setReleaseDateFormatted(
+    source: SteamWLRecGameData,
+    target: WLGameRec
+): void {
+    target.releaseDateFormatted = source.release_string;
+}
+
+function setAddedToWLUnix(source: SteamWLRecGameData, target: WLGameRec): void {
+    target.addedToWLUnix = source.added;
 }
