@@ -5,27 +5,25 @@
 // https://developer.valvesoftware.com/wiki/SteamID
 
 // Types for data fetched from Steam.
-type SteamRecGameID = string; // Steam game ID which is a number in string form.
+type SteamWLRecGameID = string; // Steam game ID which is a number in string form.
 // Fields are predefined by Steam.
-type SteamRecGameData = {
+export type SteamWLRecGameData = {
     name: string; // Game title.
     priority: number; // User/default priority list ordering.
 };
 // Each entry represents a game.
-type SteamWishlistRecord = Record<SteamRecGameID, SteamRecGameData>;
+type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
 
 /**
  * Takes a valid withlist API url and gets wishlist data from Steam.
  * @example const wishlist = fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
- *  returns a SteamWishlistRecord.
+ *  returns a SteamWLRecord.
  * @param url is the correct link to get a user's Steam wishlist.
  * @precondition The url must be a valid fetch link, the account need not exist.
  * @returns A Record containing game-ids with game-data records,
  *  or false if failed to fetch.
  */
-async function fetchFromSteam(
-    url: string
-): Promise<SteamWishlistRecord | false> {
+async function fetchFromSteam(url: string): Promise<SteamWLRecord | false> {
     const wishlistAsRecord = await fetch(url)
         .then((res) => {
             if (res.ok) return res.json();
@@ -36,7 +34,7 @@ async function fetchFromSteam(
             return false;
         });
     //console.log(wishlistAsRecord);
-    return wishlistAsRecord as Promise<SteamWishlistRecord | false>;
+    return wishlistAsRecord as Promise<SteamWLRecord | false>;
 }
 
 /**
@@ -101,12 +99,10 @@ function isValidSteamUniqueID(inputString: string): boolean {
  * Called when a new/updated Steam Wishlist is to be fetched.
  * @param userInput is the steam64/nameID string which may not be validated,
  *  but must be a string.
- * @returns a SteamWishlistRecord if fetch succeeds. If fetch fails or
+ * @returns a SteamWLRecord if fetch succeeds. If fetch fails or
  *  input validation fails, false will be returned.
  */
-export function newWishlistRecord(
-    userInput: string
-): SteamWishlistRecord | false {
+export function newWishlistRecord(userInput: string): SteamWLRecord | false {
     let validURL: string;
     if (isValidSteam64(userInput))
         validURL = steamIdentifierToURL(userInput, true);
@@ -114,11 +110,11 @@ export function newWishlistRecord(
         validURL = steamIdentifierToURL(userInput, false);
     else return false;
 
-    /* Conversion of type 'Promise<false | SteamWishlistRecord>' to type 
-    'false | SteamWishlistRecord' may be a mistake because neither type 
+    /* Conversion of type 'Promise<false | SteamWLRecord>' to type 
+    'false | SteamWLRecord' may be a mistake because neither type 
     sufficiently overlaps with the other. */
     const wishlistOrFalse = fetchFromSteam(validURL) as unknown as Awaited<
-        Promise<SteamWishlistRecord | false>
+        Promise<SteamWLRecord | false>
     >;
     return wishlistOrFalse;
 }
