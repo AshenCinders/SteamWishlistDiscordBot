@@ -12,3 +12,19 @@ export type WLGameRec = {
 };
 
 export type WishlistArr = Array<WLGameRec>;
+
+/**
+ * @returns a new WLGameRec record with all properties as empty.
+ */
+function newWLGameRecTemplate(): WLGameRec {
+    return {
+        appid: '',
+        priority: 0,
+        name: '',
+        tags: [],
+        reviewGrade: '',
+        releaseDateUnix: 0,
+        releaseDateFormatted: '',
+        addedToWLUnix: 0,
+    };
+}
