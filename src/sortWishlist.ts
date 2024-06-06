@@ -44,3 +44,21 @@ function quicksort<T>(
         quicksort(arr, dividingIndex + 1, highIndex, sortCond);
     }
 }
+
+/**
+ * Takes a wishlist array and sorts it in-place based on the priority property.
+ * @param wlArr is of type WishlistArr
+ */
+export function sortWishlistArray(wlArr: WishlistArr): void {
+    // TODO filter out priority=0 and append after sort
+
+    const condByPriority = (
+        array: WishlistArr,
+        index: number,
+        pivot: WLGameRec
+    ): boolean => {
+        return array[index].priority <= pivot.priority;
+    };
+
+    quicksort(wlArr, 0, wlArr.length - 1, condByPriority);
+}
