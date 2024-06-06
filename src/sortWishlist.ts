@@ -1,8 +1,20 @@
 import { WLGameRec, WishlistArr } from './constructWishlist';
 
-// Quicksort with ordering based on priority property of each element.
-
-function quicksort<T>(
+/**
+ * Generic function for sorting an array in-place.
+ * @param arr is the array containing generic elements.
+ * @param lowIndex is the lowest index of the array.
+ *  It is safe to assume that it is 0 at initial function call.
+ * @param highIndex is length - 1. Both low and high index
+ *  can be changed if only a part of an array is to be sorted.
+ * @param sortCond is an optional higher-order boolean function
+ *  determining sort ordering. Should the argument be left out,
+ *  the following default function will be used:
+ * \<T>(array: Array\<T>, index: number, pivot: T): boolean => {
+ *     return array[index] <= pivot;
+ * }
+ */
+export function quicksort<T>(
     arr: Array<T>,
     lowIndex: number,
     highIndex: number,
@@ -32,12 +44,13 @@ function quicksort<T>(
         // Return index for next iteration's pivot.
         return lastIndexLowSide + 1;
     }
+    // If sortCond argument is left out, replace with a default.
     if (sortCond === undefined) {
         sortCond = <T>(array: Array<T>, index: number, pivot: T): boolean => {
             return array[index] <= pivot;
         };
     }
-
+    // Unless base case is hit, keep subdividing.
     if (lowIndex < highIndex) {
         const dividingIndex = divideUsingPivot();
         quicksort(arr, lowIndex, dividingIndex - 1, sortCond);
