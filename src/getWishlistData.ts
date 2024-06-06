@@ -5,7 +5,7 @@
 // https://developer.valvesoftware.com/wiki/SteamID
 
 // Types for data fetched from Steam.
-type SteamWLRecGameID = string; // Steam game ID which is a number in string form.
+export type SteamWLRecGameID = string; // Steam game ID which is a number in string form.
 // Fields are predefined by Steam.
 export type SteamWLRecGameData = {
     name: string; // Game title.
