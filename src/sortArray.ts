@@ -1,24 +1,12 @@
 import { WLGameRec, WishlistArr } from './constructWishlist';
 
-/**
- * Generic function for sorting an array in-place.
- * @param arr is the array containing generic elements.
- * @param lowIndex is the lowest index of the array.
- *  It is safe to assume that it is 0 at initial function call.
- * @param highIndex is length - 1. Both low and high index
- *  can be changed if only a part of an array is to be sorted.
- * @param sortCond is an optional higher-order boolean function
- *  determining sort ordering. Should the argument be left out,
- *  the following default function will be used:
- * \<T>(array: Array\<T>, index: number, pivot: T): boolean => {
- *     return array[index] <= pivot;
- * }
- */
-export function quicksort<T>(
+// Abstracted function for performance.
+// Use quicksort for as interface to sort.
+function quicksortInternal<T>(
     arr: Array<T>,
+    sortCond: (array: Array<T>, index: number, pivot: T) => boolean,
     lowIndex: number,
-    highIndex: number,
-    sortCond?: (array: Array<T>, index: number, pivot: T) => boolean
+    highIndex: number
 ): void {
     function swap(indexA: number, indexB: number): void {
         const temp = arr[indexA];
@@ -44,18 +32,46 @@ export function quicksort<T>(
         // Return index for next iteration's pivot.
         return lastIndexLowSide + 1;
     }
+
+    // Unless base case is hit, keep subdividing.
+    if (lowIndex < highIndex) {
+        const dividingIndex = divideUsingPivot();
+        quicksortInternal(arr, sortCond, lowIndex, dividingIndex - 1);
+        quicksortInternal(arr, sortCond, dividingIndex + 1, highIndex);
+    }
+}
+
+/**
+ * Generic function for sorting an array in-place.
+ * @param arr is the array containing generic elements.
+ * @param sortCond (optional) is a higher-order boolean function
+ *  determining sort ordering. Should the argument be left out,
+ *  the following default function will be used:
+ * \<T>(array: Array\<T>, index: number, pivot: T): boolean => {
+ *     return array[index] <= pivot;
+ * }
+ * @param lowIndex (optional) is the lowest index for the part of the array
+ *  to be sorted. Omit when sorting full array.
+ * @param highIndex (optional) is the highest index for the part of the array
+ *  to be sorted. Omit when sorting full array.
+ */
+export function quicksort<T>(
+    arr: Array<T>,
+    sortCond?: (array: Array<T>, index: number, pivot: T) => boolean,
+    lowIndex?: number,
+    highIndex?: number
+): void {
     // If sortCond argument is left out, replace with a default.
     if (sortCond === undefined) {
         sortCond = <T>(array: Array<T>, index: number, pivot: T): boolean => {
             return array[index] <= pivot;
         };
     }
-    // Unless base case is hit, keep subdividing.
-    if (lowIndex < highIndex) {
-        const dividingIndex = divideUsingPivot();
-        quicksort(arr, lowIndex, dividingIndex - 1, sortCond);
-        quicksort(arr, dividingIndex + 1, highIndex, sortCond);
-    }
+    // If high or low index arguments have been omitted, set defaults.
+    if (lowIndex === undefined) lowIndex = 0;
+    if (highIndex === undefined) highIndex = arr.length - 1;
+
+    quicksortInternal(arr, sortCond, lowIndex, highIndex);
 }
 
 /**
@@ -73,5 +89,5 @@ export function sortWishlistArray(wlArr: WishlistArr): void {
         return array[index].priority <= pivot.priority;
     };
 
-    quicksort(wlArr, 0, wlArr.length - 1, condByPriority);
+    quicksort(wlArr, condByPriority);
 }
