@@ -1,6 +1,7 @@
 {
     "scripts": {
         "start": "ts-node src/bot",
+        "push": "ts-node deploy-commands.ts",
         "test": "jest",
         "tests": "jest",
         "dev": "eslint && ts-node src/bot -p -e"
