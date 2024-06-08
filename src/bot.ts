@@ -4,7 +4,7 @@
 import { Client, Events, GatewayIntentBits, Interaction } from 'discord.js';
 import { config } from 'dotenv';
 import * as ping from './commands/ping';
-import * as wishlist from './commands/ping';
+import * as wishlist from './commands/wishlist';
 
 config();
 
