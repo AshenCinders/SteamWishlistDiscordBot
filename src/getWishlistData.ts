@@ -125,22 +125,26 @@ function isValidSteamUniqueID(inputString: string): boolean {
  * Called when a new/updated Steam Wishlist is to be fetched.
  * @param userInput is the steam64/nameID string which may not be validated,
  *  but must be a string.
- * @returns a SteamWLRecord if fetch succeeds. If fetch fails or
- *  input validation fails, false will be returned.
+ * @returns A tuple of a boolean denoting outcome,
+ *  and either a SteamWLRecord, or a string explaining what caused the failure.
  */
-export function newWishlistRecord(userInput: string): SteamWLRecord | false {
+export function newWishlistRecord(userInput: string): RawMaybeWishlist {
     let validURL: string;
     if (isValidSteam64(userInput))
         validURL = steamIdentifierToURL(userInput, true);
     else if (isValidSteamUniqueID(userInput))
         validURL = steamIdentifierToURL(userInput, false);
-    else return false;
+    else
+        return [
+            false,
+            "The steam64 or custom name you've inputted is not valid.",
+        ];
 
-    /* Conversion of type 'Promise<false | SteamWLRecord>' to type 
-    'false | SteamWLRecord' may be a mistake because neither type 
+    /* Conversion of type 'Promise<RawMaybeWishlist>' to type 
+    'RawMaybeWishlist' may be a mistake because neither type 
     sufficiently overlaps with the other. */
-    const wishlistOrFalse = fetchFromSteam(validURL) as unknown as Awaited<
-        Promise<SteamWLRecord | false>
+    const wishlistTuple = fetchFromSteam(validURL) as unknown as Awaited<
+        Promise<RawMaybeWishlist>
     >;
-    return wishlistOrFalse;
+    return wishlistTuple;
 }
