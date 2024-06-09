@@ -17,8 +17,8 @@ export type WLGameRec = {
     addedToWLUnix: number;
 };
 
-export type WishlistArr = Array<WLGameRec>;
-
+type WishlistArr = Array<WLGameRec>;
+export type Wishlist = WishlistArr;
 /**
  * @returns a new WLGameRec record with all properties as empty.
  */
@@ -105,14 +105,12 @@ function constructWLElem(
 }
 
 /**
- * Created a new sorted wishlist array
+ * Creates a new Wishlist data structure.
  *  that is sorted based on user WL ranking priority.
  * @param wlFetchData is a JS object containing wishlist data from Steam.
- * @returns An array with each element as a WLGameRec.
+ * @returns A wishlist structure of type Wishlist.
  */
-export function constructWishlistArray(
-    wlFetchData: SteamWLRecord
-): WishlistArr {
+export function constructWishlist(wlFetchData: SteamWLRecord): Wishlist {
     let wlArr: WishlistArr = [];
 
     for (const gameKey in wlFetchData) {
