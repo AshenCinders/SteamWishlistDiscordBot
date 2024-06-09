@@ -18,28 +18,49 @@ export type SteamWLRecGameData = {
 };
 // Each entry represents a game.
 export type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
+export type RawMaybeWishlist = [true, SteamWLRecord] | [false, string];
 
 /**
  * Takes a valid withlist API url and gets wishlist data from Steam.
  * @example const wishlist = fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
  *  returns a SteamWLRecord.
  * @param url is the correct link to get a user's Steam wishlist.
- * @precondition The url must be a valid fetch link, the account need not exist.
- * @returns A Record containing game-ids with game-data records,
- *  or false if failed to fetch.
+ * @precondition The url must be a valid fetch link, the account needn't exist.
+ * @returns A tuple of a boolean denoting outcome,
+ *  and either a Record containing game-ids with game-data records,
+ *  or a string explaining what caused the failure.
  */
-async function fetchFromSteam(url: string): Promise<SteamWLRecord | false> {
-    const wishlistAsRecord = await fetch(url)
+async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
+    const wishlistRecordTuple = await fetch(url)
         .then((res) => {
-            if (res.ok) return res.json();
-            else throw new Error('Failed to fetch from Steam website');
+            /* There is no success: true/false property as there is in 
+            specific game data response. It seems that the fetch limit is a 
+            lot higher than for specific game data. */
+            if (res.ok) {
+                const data = res.json();
+                return [true, data];
+            } else throw new Error('Failed to fetch from Steam website');
         })
         .catch((err) => {
-            //console.log(err);
-            return false;
+            return [false, err];
         });
+
+    try {
+        const testData = wishlistRecordTuple[1] as SteamWLRecord;
+        const testGame = testData[Object.keys(testData)[0]];
+        const testName = testGame.name;
+        if (typeof testName !== 'string')
+            throw new Error(
+                `Steam failed to return wishlist data. \
+                    This may be because the fetch limit has \
+                    been surpassed.`
+            );
+    } catch (err) {
+        return [false, err as string];
+    }
+
     //console.log(wishlistAsRecord);
-    return wishlistAsRecord as Promise<SteamWLRecord | false>;
+    return wishlistRecordTuple as RawMaybeWishlist;
 }
 
 /**
