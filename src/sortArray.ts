@@ -1,4 +1,4 @@
-import { WLGameRec, WishlistArr } from './constructWishlist';
+import { WLGameRec, WishlistArr } from './wishlists/constructWishlist';
 
 // Abstracted function for performance.
 // Use quicksort for as interface to sort.

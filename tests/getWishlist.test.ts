@@ -1,4 +1,4 @@
-import { newWishlistRecord } from '../src/getWishlist';
+import { newWishlistRecord } from '../src/wishlists/getWishlistData';
 
 // Note that 'a' passes as a valid custom steam URL-name.
 const a = newWishlistRecord('nonsensedata');
