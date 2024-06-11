@@ -78,7 +78,7 @@ export function quicksort<T>(
  * Takes a wishlist array and sorts it in-place based on the priority property.
  * @param wlArr is of type WishlistArr
  */
-export function sortWishlistArray(wlArr: WishlistArr): void {
+export function sortWishlist(wlArr: WishlistArr): void {
     // TODO filter out priority=0 and append after sort
 
     const condByPriority = (

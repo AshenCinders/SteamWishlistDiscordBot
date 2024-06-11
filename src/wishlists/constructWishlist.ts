@@ -17,8 +17,7 @@ export type WLGameRec = {
     addedToWLUnix: number;
 };
 
-type WishlistArr = Array<WLGameRec>;
-export type Wishlist = WishlistArr;
+export type Wishlist = Array<WLGameRec>;
 /**
  * @returns a new WLGameRec record with all properties as empty.
  */
@@ -111,7 +110,7 @@ function constructWLElem(
  * @returns A wishlist structure of type Wishlist.
  */
 export function constructWishlist(wlFetchData: SteamWLRecord): Wishlist {
-    let wlArr: WishlistArr = [];
+    let wlArr: Wishlist = [];
 
     for (const gameKey in wlFetchData) {
         wlArr.push(constructWLElem(gameKey, wlFetchData[gameKey]));
