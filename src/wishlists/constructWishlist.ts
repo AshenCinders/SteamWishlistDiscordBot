@@ -16,6 +16,7 @@ export type WLGameRec = {
     releaseDateUnix: number;
     releaseDateFormatted: string;
     addedToWLUnix: number;
+    addedToWLFormatted: string;
 };
 
 export type Wishlist = Array<WLGameRec>;
@@ -32,6 +33,7 @@ function newWLGameRecTemplate(): WLGameRec {
         releaseDateUnix: 0,
         releaseDateFormatted: '',
         addedToWLUnix: 0,
+        addedToWLFormatted: '',
     };
 }
 
@@ -80,6 +82,15 @@ function setAddedToWLUnix(source: SteamWLRecGameData, target: WLGameRec): void {
     target.addedToWLUnix = source.added;
 }
 
+function setAddedToWLFormatted(
+    source: SteamWLRecGameData,
+    target: WLGameRec
+): void {
+    const date = new Date(source.added);
+    target.addedToWLFormatted =
+        date.getFullYear + '-' + date.getMonth + '-' + date.getDate;
+}
+
 /**
  * Construction function for a new element in a wishlist array.
  * @param rawData is raw wishlist game data fetched from steam WL.
@@ -100,6 +111,7 @@ function constructWLElem(
     setReleaseDateUnix(rawData, newElem);
     setReleaseDateFormatted(rawData, newElem);
     setAddedToWLUnix(rawData, newElem);
+    setAddedToWLFormatted(rawData, newElem);
 
     return newElem;
 }
