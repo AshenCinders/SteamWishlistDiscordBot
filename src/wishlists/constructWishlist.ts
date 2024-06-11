@@ -3,6 +3,7 @@ import {
     SteamWLRecGameData,
     SteamWLRecord,
 } from './getWishlistData';
+import { sortWishlist } from '../sortArray';
 
 export type WLGameRec = {
     appid: number;
@@ -116,7 +117,7 @@ export function constructWishlist(wlFetchData: SteamWLRecord): Wishlist {
         wlArr.push(constructWLElem(gameKey, wlFetchData[gameKey]));
     }
 
-    // TODO sort based on prio
+    sortWishlist(wlArr);
 
     return wlArr;
 }
