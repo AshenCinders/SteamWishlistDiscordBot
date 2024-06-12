@@ -4,6 +4,13 @@ import { newWishlistRecord } from './getWishlistData';
 export type BoolTuple = [true, string] | [false, string];
 export type MaybeWishlist = [true, Wishlist] | [false, string];
 
+export type StringifyWLChoices = {
+    showTags?: boolean;
+    showReviewGrade?: boolean;
+    showReleaseDateFormatted?: boolean;
+    showAddedToWLFormatted?: boolean;
+};
+
 /**
  * Rough check to avoid parsing long/empty strings.
  * @param str to be checked.
