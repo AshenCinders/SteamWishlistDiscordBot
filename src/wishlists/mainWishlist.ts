@@ -39,6 +39,22 @@ export function delLastNewline(str: string): string {
 }
 
 /**
+ * Converts an array of strings to a single string.
+ * @param inputArr an array with all elements as strings.
+ * @returns a string with all elements in a single string separated by commas.
+ */
+export function stringArrayToString(inputArr: Array<string>): string {
+    let listStr = '';
+    for (let i = 0; i < inputArr.length; i++) {
+        listStr += inputArr[i].toString() + ', ';
+    }
+    // Remove last comma.
+    listStr = listStr.slice(0, -1);
+
+    return listStr;
+}
+
+/**
  * Tries to fetch wishlist data from database.
  * @param userIdentifier is the discordID or steam64/custom name identifier
  *  for a user.
