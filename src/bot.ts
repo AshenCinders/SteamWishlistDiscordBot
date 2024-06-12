@@ -3,8 +3,10 @@
 
 import { Client, Events, GatewayIntentBits, Interaction } from 'discord.js';
 import { config } from 'dotenv';
+// User-facing commands.
 import * as ping from './commands/ping';
 import * as wishlist from './commands/wishlist';
+// Utility interactions.
 import * as onMyWLButton from './commands/utility/onMyWLButton';
 import * as onElseWLButton from './commands/utility/onElseWLButton';
 
