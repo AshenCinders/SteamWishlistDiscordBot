@@ -40,7 +40,7 @@ async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
                 const data = await res.json();
                 //console.log('Data from steam fetch: ', data);
                 return [true, data];
-            } else throw new Error('Failed to fetch from Steam website');
+            } else throw new Error();
         })
         .catch((err) => {
             return [false, err];
@@ -50,14 +50,17 @@ async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
         const testData = wishlistRecordTuple[1] as SteamWLRecord;
         const testGame = testData[Object.keys(testData)[0]];
         const testName = testGame.name;
-        if (typeof testName !== 'string')
-            throw new Error(
-                `Steam failed to return wishlist data. \
-                    This may be because the fetch limit has \
-                    been surpassed.`
-            );
+        /* Fetch suceeded, but invalid data structure
+        This can occur for example if an empty page is accessed,
+        e.g. p=1 if the user has < 100 games in WL.*/
+        if (typeof testName !== 'string') throw new Error();
     } catch (err) {
-        return [false, err as string];
+        return [
+            false,
+            'Steam failed to return wishlist data.\n' +
+                '**You may have inputted an invalid account identifier**\n' +
+                'or the Steam fetch limit has been surpassed.',
+        ];
     }
 
     return wishlistRecordTuple as RawMaybeWishlist;
