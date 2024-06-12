@@ -39,3 +39,12 @@ export function wrapColors(str: string): string {
     return '```ansi\n' + str + '\n```';
 }
 
+// Misc markdown syntax wrappers.
+
+export function bold(str: string): string {
+    return '**' + str + '**';
+}
+
+export function italic(str: string): string {
+    return '*' + str + '*';
+}
