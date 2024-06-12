@@ -93,16 +93,21 @@ export function fetchWLFromDB(userIdentifier: string): BoolTuple {
  *  and either a Wishlist,
  *  or a string explaining what caused the fetch to fail.
  */
-export function getNewWishlistData(userIdentifier: string): MaybeWishlist {
+export async function getNewWishlistData(
+    userIdentifier: string
+): Promise<MaybeWishlist> {
     const inputString = userIdentifier.toString();
     if (!isValidString(inputString))
         return [false, "The input you've written is invalid."];
 
-    const fetchTuple = newWishlistRecord(inputString);
-    if (fetchTuple[0] === false) return fetchTuple;
+    const result = await newWishlistRecord(inputString).then((fetchTuple) => {
+        // If failed, return tuple with fail string.S
+        if (fetchTuple[0] === false) return fetchTuple;
 
-    const createdWL: Wishlist = constructWishlist(fetchTuple[1]);
-    return [true, createdWL];
+        const createdWL: Wishlist = constructWishlist(fetchTuple[1]);
+        return [true, createdWL];
+    });
+    return result as MaybeWishlist;
 }
 
 /**

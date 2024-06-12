@@ -32,12 +32,13 @@ export type RawMaybeWishlist = [true, SteamWLRecord] | [false, string];
  */
 async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
     const wishlistRecordTuple = await fetch(url)
-        .then((res) => {
+        .then(async (res) => {
             /* There is no success: true/false property as there is in 
             specific game data response. It seems that the fetch limit is a 
             lot higher than for specific game data. */
             if (res.ok) {
-                const data = res.json();
+                const data = await res.json();
+                //console.log('Data from steam fetch: ', data);
                 return [true, data];
             } else throw new Error('Failed to fetch from Steam website');
         })
@@ -59,7 +60,6 @@ async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
         return [false, err as string];
     }
 
-    //console.log(wishlistAsRecord);
     return wishlistRecordTuple as RawMaybeWishlist;
 }
 
@@ -128,7 +128,9 @@ function isValidSteamUniqueID(inputString: string): boolean {
  * @returns A tuple of a boolean denoting outcome,
  *  and either a SteamWLRecord, or a string explaining what caused the failure.
  */
-export function newWishlistRecord(userInput: string): RawMaybeWishlist {
+export async function newWishlistRecord(
+    userInput: string
+): Promise<RawMaybeWishlist> {
     let validURL: string;
     if (isValidSteam64(userInput))
         validURL = steamIdentifierToURL(userInput, true);
@@ -140,11 +142,5 @@ export function newWishlistRecord(userInput: string): RawMaybeWishlist {
             "The steam64 or custom name you've inputted is not valid.",
         ];
 
-    /* Conversion of type 'Promise<RawMaybeWishlist>' to type 
-    'RawMaybeWishlist' may be a mistake because neither type 
-    sufficiently overlaps with the other. */
-    const wishlistTuple = fetchFromSteam(validURL) as unknown as Awaited<
-        Promise<RawMaybeWishlist>
-    >;
-    return wishlistTuple;
+    return fetchFromSteam(validURL);
 }
