@@ -27,6 +27,18 @@ function isValidString(str: any): str is string {
 }
 
 /**
+ * If a newline character exists at the end of input string str,
+ *  it will then get removed.
+ * Function does not require input str to have a newline at the end.
+ * @param str is any string.
+ * @returns str without a newline character at the end.
+ */
+export function delLastNewline(str: string): string {
+    if (/\n$/.test(str)) return str.slice(0, -2);
+    else return str;
+}
+
+/**
  * Tries to fetch wishlist data from database.
  * @param userIdentifier is the discordID or steam64/custom name identifier
  *  for a user.
