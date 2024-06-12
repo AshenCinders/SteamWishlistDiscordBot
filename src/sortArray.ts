@@ -1,4 +1,4 @@
-import { WLGameRec, WishlistArr } from './wishlists/constructWishlist';
+import { WLGameRec, Wishlist } from './wishlists/constructWishlist';
 
 // Abstracted function for performance.
 // Use quicksort for as interface to sort.
@@ -78,11 +78,11 @@ export function quicksort<T>(
  * Takes a wishlist array and sorts it in-place based on the priority property.
  * @param wlArr is of type WishlistArr
  */
-export function sortWishlist(wlArr: WishlistArr): void {
+export function sortWishlist(wlArr: Wishlist): void {
     // TODO filter out priority=0 and append after sort
 
     const condByPriority = (
-        array: WishlistArr,
+        array: Wishlist,
         index: number,
         pivot: WLGameRec
     ): boolean => {
