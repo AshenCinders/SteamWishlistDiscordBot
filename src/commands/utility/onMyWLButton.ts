@@ -8,7 +8,11 @@ import {
     ActionRowBuilder,
     ModalSubmitInteraction,
 } from 'discord.js';
-import { fetchWLFromDB } from '../../wishlists/mainWishlist';
+import {
+    fetchWLFromDB,
+    getNewWishlistData,
+    wlToMarkdownCustom,
+} from '../../wishlists/mainWishlist';
 
 export const data = new SlashCommandBuilder()
     .setName('onmywl')
@@ -24,7 +28,8 @@ export async function execute(interaction: ButtonInteraction) {
     const fetchTuple = fetchWLFromDB(interaction.user.id);
 
     // DB fetch attempt failed.
-    if (fetchTuple[0] === false) {
+    //fetchTuple[0] === false
+    if (true) {
         // Prompt user for id
         console.log('User was not found in DB');
         console.log(fetchTuple[1]);
@@ -67,7 +72,19 @@ export async function execute(interaction: ButtonInteraction) {
 
                 // start sequence and save to DB
                 // TODO
-                await modalInteraction.editReply({ content: 'data gotten' });
+                getNewWishlistData(textInput).then(async (wlTuple) => {
+                    if (wlTuple[0] === false) {
+                        console.log(wlTuple[1]);
+                        await modalInteraction.editReply({
+                            content: wlTuple[1],
+                        });
+                    } else {
+                        const displayStr = wlToMarkdownCustom(wlTuple[1], {});
+                        await modalInteraction.editReply({
+                            content: displayStr,
+                        });
+                    }
+                });
             })
             .catch((err) => {
                 console.log(err);
