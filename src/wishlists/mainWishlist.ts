@@ -1,5 +1,14 @@
 import { Wishlist, constructWishlist } from './constructWishlist';
-import { newWishlistRecord } from './getWishlistData';
+import { SteamWLRecord, newWishlistRecord } from './getWishlistData';
+import {
+    bold,
+    italic,
+    wrapColors,
+    blue,
+    cyan,
+    green,
+    gray,
+} from '../mdWrappers';
 
 export type BoolTuple = [true, string] | [false, string];
 export type MaybeWishlist = [true, Wishlist] | [false, string];
@@ -94,4 +103,60 @@ export function getNewWishlistData(userIdentifier: string): MaybeWishlist {
 
     const createdWL: Wishlist = constructWishlist(fetchTuple[1]);
     return [true, createdWL];
+}
+
+/**
+ * Constructs a string with markdown syntax for displaying a whole wishlist.
+ * @param wl a wishlist of type Wishlist.
+ * @param choiceRec a record of type StringifyWLChoices.
+ *  Any property that is  omitted will by default be ignored.
+ * @returns a string with markdown syntax.
+ */
+export function wlToMarkdownCustom(
+    wl: Wishlist,
+    choiceRec: StringifyWLChoices
+): string {
+    // Assigning default hide values if caller omitted any.
+    choiceRec.showTags ??= false;
+    choiceRec.showReviewGrade ??= false;
+    choiceRec.showReleaseDateFormatted ??= false;
+    choiceRec.showAddedToWLFormatted ??= false;
+
+    let fullString =
+        italic('This wishlist contains ' + wl.length.toString() + ' games!') +
+        '\n';
+
+    // Each loop appends one game.
+    for (let i = 0; i < wl.length; i++) {
+        const game = wl[i];
+        fullString += bold(game.name) + '\n';
+
+        let otherInfo = '';
+        if (choiceRec.showTags === true) {
+            const tagStr = stringArrayToString(game.tags);
+            otherInfo += cyan('Tags: ' + tagStr) + '\n';
+        }
+        if (choiceRec.showReviewGrade === true) {
+            otherInfo += blue('Review Score: ' + game.reviewGrade) + '\n';
+        }
+        if (choiceRec.showReleaseDateFormatted === true) {
+            otherInfo +=
+                green('Game Released: ' + game.releaseDateFormatted) + '\n';
+        }
+        if (choiceRec.showAddedToWLFormatted === true) {
+            otherInfo +=
+                gray(
+                    'Date player added to wishlist: ' + game.addedToWLFormatted
+                ) + '\n';
+        }
+
+        if (otherInfo !== '') {
+            // Remove last newline char.
+            otherInfo = delLastNewline(otherInfo);
+            otherInfo = wrapColors(otherInfo);
+            fullString += otherInfo;
+        }
+    }
+
+    return fullString;
 }
