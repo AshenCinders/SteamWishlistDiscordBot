@@ -86,9 +86,15 @@ function setAddedToWLFormatted(
     source: SteamWLRecGameData,
     target: WLGameRec
 ): void {
-    const date = new Date(source.added);
-    target.addedToWLFormatted =
-        date.getFullYear + '-' + date.getMonth + '-' + date.getDate;
+    const fullDate = new Date(source.added * 1000);
+    const year = fullDate.getFullYear().toString();
+    let month = fullDate.getMonth().toString();
+    let date = fullDate.getDate().toString();
+
+    if (month.length === 1) month = '0' + month;
+    if (date.length === 1) date = '0' + date;
+
+    target.addedToWLFormatted = year + '-' + month + '-' + date;
 }
 
 /**
