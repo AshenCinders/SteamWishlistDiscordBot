@@ -79,7 +79,7 @@ export async function getNewWishlistData(
         return [false, "The input you've written is invalid."];
 
     const result = await newWishlistRecord(inputString).then((fetchTuple) => {
-        // If failed, return tuple with fail string.S
+        // If failed, return tuple with fail string.
         if (fetchTuple[0] === false) return fetchTuple;
 
         const createdWL: Wishlist = constructWishlist(fetchTuple[1]);
