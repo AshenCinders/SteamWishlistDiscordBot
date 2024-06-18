@@ -3,6 +3,7 @@
 
 import { Client, Events, GatewayIntentBits, Interaction } from 'discord.js';
 import { config } from 'dotenv';
+import mongoose from 'mongoose';
 // User-facing commands.
 import * as ping from './commands/ping';
 import * as wishlist from './commands/wishlist';
@@ -10,16 +11,26 @@ import * as wishlist from './commands/wishlist';
 import * as onMyWLButton from './commands/utility/onMyWLButton';
 import * as onElseWLButton from './commands/utility/onElseWLButton';
 
-config();
+// Connect to localhost mongodb.
+const url = 'mongodb://127.0.0.1:27017/wishlistbot';
+mongoose
+    .connect(url)
+    .then(() => {
+        console.log('Connected to mongoDB');
+    })
+    .catch((err: Error) => {
+        console.log('MongoDB connection error. ' + err);
+        //process.exit();
+    });
 
+// Connect to Discord server.
+config();
 const client = new Client({
     intents: [GatewayIntentBits.Guilds],
 });
-
 client.once(Events.ClientReady, () =>
     console.log(client.user!.tag + ' has logged in!')
 );
-
 client.login(process.env.TOKEN);
 
 const tempFn = () => {
