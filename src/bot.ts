@@ -56,7 +56,9 @@ async function handleInteraction(interaction: Interaction) {
         await commandRec[interaction.commandName as keyof recordWithCommands](
             interaction
         );
-        console.log('Command used: ', interaction.commandName);
+        console.log(
+            `Discord user ${interaction.user.displayName} used the command: ${interaction.commandName}`
+        );
     } else return;
 }
 
