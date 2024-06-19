@@ -9,10 +9,6 @@ import {
     ActionRowBuilder,
 } from 'discord.js';
 
-export const data = new SlashCommandBuilder()
-    .setName('onelsewl')
-    .setDescription('Utility file for wishlist button');
-
 /**
  * Interaction to view 'Someone else's wishlist'. The user gets prompted to input the identifier for the account's wishlist they wish to see.
  * A fetch is sent out, if successful the wishlist gets discplayed to the user, else a fail message is shown.

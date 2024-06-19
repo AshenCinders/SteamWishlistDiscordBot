@@ -14,10 +14,6 @@ import {
     wlToMarkdownCustom,
 } from '../../wishlists/mainWishlist';
 
-export const data = new SlashCommandBuilder()
-    .setName('onmywl')
-    .setDescription('Utility file for wishlist button');
-
 /**
  * Interaction to view 'My wishlist'. If the user is not in DB, then they are prompted to write their identifier into a modal.
  * If the user is in DB or the fetch from identifier is successful, then the wishlist gets displayed to the user.
