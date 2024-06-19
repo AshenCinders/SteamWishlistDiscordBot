@@ -52,3 +52,27 @@ export async function dbGetWishlist(
         return [false, 'Failed to get wishlist data from DB'];
     }
 }
+
+export async function dbDeleteWishlist(discordID: string): Promise<BoolTuple> {
+    const inputString = discordID.toString();
+    if (!isValidString(inputString))
+        return [false, "The input you've written is invalid."];
+
+    if (
+        (await WishlistModel.exists({
+            discordIdentifier: inputString,
+        })) == null
+    ) {
+        return [false, 'The user was not found in DB'];
+    }
+
+    try {
+        await WishlistModel.deleteOne({
+            discordIdentifier: inputString,
+        });
+        return [true, 'Successfully deleted user wishlist data'];
+    } catch (err) {
+        console.log('A DB delete attempt failed: ', err);
+        return [false, 'Failed to delete wishlist data in DB'];
+    }
+}
