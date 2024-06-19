@@ -1,4 +1,8 @@
 // HAS early access tag id: '70', and does NOT HAVE a discount percentage.
+
+//CURRENTLY UNUSED, WILL BE USED IF FUNCTIONALITY TO LOOK AT SPECIFIC GAMES ARE
+//IMPLEMENTED IN THE FUTURE.
+
 const earlyAccessNoDiscount = {
     1121640: {
         success: true,

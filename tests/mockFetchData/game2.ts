@@ -1,4 +1,8 @@
 // Does NOT HAVE early access tag id: '70', and HAS a discount percentage.
+
+//CURRENTLY UNUSED, WILL BE USED IF FUNCTIONALITY TO LOOK AT SPECIFIC GAMES ARE
+//IMPLEMENTED IN THE FUTURE.
+
 const fullReleaseHasDiscount = {
     1233070: {
         success: true,

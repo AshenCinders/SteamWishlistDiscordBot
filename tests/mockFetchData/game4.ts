@@ -1,5 +1,9 @@
 // Has external DRM and requires external account sign-in, according to Steam.
 // Has 81 DLCs or similar.
+
+//CURRENTLY UNUSED, WILL BE USED IF FUNCTIONALITY TO LOOK AT SPECIFIC GAMES ARE
+//IMPLEMENTED IN THE FUTURE.
+
 const externalAccAndDRM = {
     1222670: {
         success: true,

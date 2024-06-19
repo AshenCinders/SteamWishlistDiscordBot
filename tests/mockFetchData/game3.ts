@@ -1,4 +1,8 @@
 // Has coming_soon: true
+
+//CURRENTLY UNUSED, WILL BE USED IF FUNCTIONALITY TO LOOK AT SPECIFIC GAMES ARE
+//IMPLEMENTED IN THE FUTURE.
+
 const unreleased = {
     669270: {
         success: true,
