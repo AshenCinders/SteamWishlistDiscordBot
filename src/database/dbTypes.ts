@@ -1,20 +1,10 @@
-export type wishlistGameDBType = {
-    appid: Number;
-    priority: Number;
-    name: String;
-    tags: Array<String>;
-    reviewGrade: String;
-    releaseDateUnix: Number;
-    releaseDateFormatted: String;
-    addedToWLUnix: Number;
-    addedToWLFormatted: String;
-};
+import { Wishlist } from '../wishlists/constructWishlist';
 
 export type wishlistDBType = {
-    discordIdentifier: String;
-    givenIdentifier: String;
-    unixFetchedAt: Number;
-    wishlistData: Array<wishlistGameDBType>;
+    discordIdentifier: string;
+    givenIdentifier: string;
+    unixFetchedAt: number;
+    wishlistData: Wishlist;
 };
 
 export type DBMaybeWishlist = [true, wishlistDBType] | [false, string];
