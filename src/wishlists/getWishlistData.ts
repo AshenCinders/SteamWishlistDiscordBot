@@ -4,21 +4,7 @@
 // For further reading regarding SteamIDs:
 // https://developer.valvesoftware.com/wiki/SteamID
 
-// Types for data fetched from Steam.
-export type SteamWLRecGameID = string; // Steam game ID which is a number in string form.
-// Fields are predefined by Steam.
-export type SteamWLRecGameData = {
-    name: string; // Game title.
-    priority: number; // User/default priority list ordering.
-    review_desc: string; // E.g. 'Mostly Positive'
-    release_date: string; // Unix time in string form
-    release_string: string; // E.g. '4 Aug, 2022'
-    added: number; // Unix time of when user added to WL
-    tags: Array<string>; // E.g. [ 'Co-op', 'Management', 'Cooking', 'Roguelite', 'Building' ]
-};
-// Each entry represents a game.
-export type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
-export type RawMaybeWishlist = [true, SteamWLRecord] | [false, string];
+import { SteamWLRecord, RawMaybeWishlist } from './typesWishlist';
 
 /**
  * Takes a valid withlist API url and gets wishlist data from Steam.

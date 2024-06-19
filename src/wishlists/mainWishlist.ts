@@ -1,5 +1,6 @@
-import { Wishlist, constructWishlist } from './constructWishlist';
-import { SteamWLRecord, newWishlistRecord } from './getWishlistData';
+import { Wishlist, MaybeWishlist, StringifyWLChoices } from './typesWishlist';
+import { constructWishlist } from './constructWishlist';
+import { newWishlistRecord } from './getWishlistData';
 import {
     bold,
     italic,
@@ -10,16 +11,6 @@ import {
     gray,
 } from '../lib/mdWrappers';
 import { unixNow } from '../lib/miscHelpers';
-
-export type BoolTuple = [true, string] | [false, string];
-export type MaybeWishlist = [true, Wishlist] | [false, string];
-
-export type StringifyWLChoices = {
-    showTags?: boolean;
-    showReviewGrade?: boolean;
-    showReleaseDateFormatted?: boolean;
-    showAddedToWLFormatted?: boolean;
-};
 
 /**
  * Rough check to avoid parsing long/empty strings.

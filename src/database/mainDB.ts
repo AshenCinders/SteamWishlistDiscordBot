@@ -1,6 +1,7 @@
 import { DBMaybeWishlist, wishlistDBType } from './dbTypes';
+import { BoolTuple } from '../wishlists/typesWishlist';
 import { WishlistModel } from './model/Wishlist';
-import { BoolTuple, isValidString } from '../wishlists/mainWishlist';
+import { isValidString } from '../wishlists/mainWishlist';
 
 export async function dbUpdateWishlist(wl: wishlistDBType): Promise<BoolTuple> {
     const queryFn =

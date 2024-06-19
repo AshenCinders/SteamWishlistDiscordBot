@@ -1,4 +1,4 @@
-import { Wishlist } from '../wishlists/constructWishlist';
+import { Wishlist } from '../wishlists/typesWishlist';
 
 export type wishlistDBType = {
     discordIdentifier: string;

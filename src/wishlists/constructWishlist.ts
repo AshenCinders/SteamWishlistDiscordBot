@@ -2,24 +2,11 @@ import {
     SteamWLRecGameID,
     SteamWLRecGameData,
     SteamWLRecord,
-} from './getWishlistData';
+    WLGameRec,
+    Wishlist,
+} from './typesWishlist';
 import { sortWishlist } from '../lib/sortArray';
 
-export type WLGameRec = {
-    appid: number;
-    priority: number;
-    name: string;
-    tags: Array<string>;
-    reviewGrade: string;
-    // Need to convert string to number (is unix time),
-    // value comes as a string from fetch data.
-    releaseDateUnix: number;
-    releaseDateFormatted: string;
-    addedToWLUnix: number;
-    addedToWLFormatted: string;
-};
-
-export type Wishlist = Array<WLGameRec>;
 /**
  * @returns a new WLGameRec record with all properties as empty.
  */
