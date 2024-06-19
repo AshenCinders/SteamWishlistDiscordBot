@@ -37,6 +37,7 @@ export async function execute(interaction: CommandInteraction) {
         ],
     });
 
+    // Handle interaction in another file through bot event handler.
     const collectorFilter = (i: Interaction) =>
         i.user.id === interaction.user.id;
 
@@ -49,7 +50,9 @@ export async function execute(interaction: CommandInteraction) {
         // Once user clicks button, remove this interaction message.
         await interaction.deleteReply();
     } catch (err) {
-        console.log(err);
+        console.log(
+            `User ${interaction.user.displayName} failed to select a button choice in time`
+        );
         await interaction.editReply({
             content: 'User failed to select an option, cancelling command.',
             components: [],
