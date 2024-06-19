@@ -40,13 +40,11 @@ export async function execute(interaction: CommandInteraction) {
     // Handle interaction in another file through bot event handler.
     const collectorFilter = (i: Interaction) =>
         i.user.id === interaction.user.id;
-
     try {
-        const userChoice = await response.awaitMessageComponent({
+        await response.awaitMessageComponent({
             filter: collectorFilter,
             time: 60_000,
         });
-
         // Once user clicks button, remove this interaction message.
         await interaction.deleteReply();
     } catch (err) {
