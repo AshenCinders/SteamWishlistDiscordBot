@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 // User-facing commands.
 import * as ping from './commands/ping';
 import * as wishlist from './commands/wishlist';
+import * as clearMyData from './commands/clearMyData';
 // Utility interactions.
 import * as onMyWLButton from './commands/utility/onMyWLButton';
 import * as onElseWLButton from './commands/utility/onElseWLButton';
@@ -41,6 +42,7 @@ type recordWithCommands = Record<string, Function>;
 const commandRec: recordWithCommands = {
     ping: ping.execute,
     wishlist: wishlist.execute,
+    clearmydata: clearMyData.execute,
 };
 const auxButtonRec: recordWithCommands = {
     myWL: onMyWLButton.execute,
