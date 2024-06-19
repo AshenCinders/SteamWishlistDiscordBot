@@ -28,11 +28,11 @@ export async function dbUpdateWishlist(wl: wishlistDBType): Promise<BoolTuple> {
  *  or a string explaining what caused the fetch to fail.
  */
 export async function dbGetWishlist(
-    userIdentifier: string
+    discordID: string
 ): Promise<DBMaybeWishlist> {
     /* Extra save check incase discord handles user inputs as anything other 
     than a string. */
-    const inputString = userIdentifier.toString();
+    const inputString = discordID.toString();
     if (!isValidString(inputString))
         return [false, "The input you've written is invalid."];
 
