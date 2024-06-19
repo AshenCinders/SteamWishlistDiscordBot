@@ -9,6 +9,7 @@ import {
     green,
     gray,
 } from '../mdWrappers';
+import { unixNow } from '../miscHelpers';
 
 export type BoolTuple = [true, string] | [false, string];
 export type MaybeWishlist = [true, Wishlist] | [false, string];
@@ -33,6 +34,15 @@ export function isValidString(str: any): str is string {
           : str.length < 1
             ? false
             : true;
+}
+
+/**
+ * Check if enough time has passed since last fetch request.
+ * @param unixLastFetch is when user made last fetch.
+ * @returns true if more than 10min has passed.
+ */
+export function isEligibleToRefetch(unixLastFetch: number): boolean {
+    return unixNow() - unixLastFetch > 600;
 }
 
 /**
