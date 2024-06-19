@@ -43,12 +43,16 @@ export async function dbGetWishlist(
 
     try {
         if (data === null || data === undefined)
-            return [false, 'User does not exists in DB'];
+            return [
+                false,
+                'A wishlist data fetch was unable to find the user in DB',
+            ];
         else return [true, data];
     } catch (err) {
         console.log(
             'A DB fetch attempt failed from user input: ' + inputString
         );
+        console.log(err);
         return [false, 'Failed to get wishlist data from DB'];
     }
 }
