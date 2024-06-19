@@ -38,17 +38,17 @@ export async function dbGetWishlist(
 
     const response = await WishlistModel.findOne({
         discordIdentifier: inputString,
-    })
-        .then((data) => {
-            //console.log(data);
-            if (data === null) return [false, 'User does not exists in DB'];
-            else return [true, data];
-        })
-        .catch((err) => {
-            console.log(
-                'A DB fetch attempt failed from user input: ' + inputString
-            );
-            return [false, 'Failed to get wishlist data from DB'];
-        });
-    return response as DBMaybeWishlist;
+    });
+    const data = JSON.parse(JSON.stringify(response));
+
+    try {
+        if (data === null || data === undefined)
+            return [false, 'User does not exists in DB'];
+        else return [true, data];
+    } catch (err) {
+        console.log(
+            'A DB fetch attempt failed from user input: ' + inputString
+        );
+        return [false, 'Failed to get wishlist data from DB'];
+    }
 }
