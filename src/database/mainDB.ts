@@ -1,7 +1,24 @@
-import mongoose from 'mongoose';
 import { DBMaybeWishlist, wishlistDBType } from './dbTypes';
 import { WishlistModel } from './model/Wishlist';
 import { BoolTuple, isValidString } from '../wishlists/mainWishlist';
+
+export async function dbUpdateWishlist(wl: wishlistDBType): Promise<BoolTuple> {
+    const queryFn =
+        (await WishlistModel.exists({
+            discordIdentifier: wl.discordIdentifier,
+        })) !== null
+            ? WishlistModel.updateOne.bind(WishlistModel)
+            : WishlistModel.create.bind(WishlistModel);
+
+    try {
+        await queryFn(wl);
+        return [true, 'DB save successful'];
+    } catch (err) {
+        console.log('DB save failed ', err);
+        return [false, 'DB save failed'];
+    }
+}
+
 /**
  * Tries to fetch wishlist data from database.
  * @param userIdentifier is the discordID or steam64/custom name identifier
