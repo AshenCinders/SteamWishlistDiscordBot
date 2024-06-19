@@ -17,7 +17,7 @@ const url = 'mongodb://127.0.0.1:27017/wishlistbot';
 mongoose
     .connect(url)
     .then(() => {
-        console.log('Connected to mongoDB');
+        console.log('Bot connected to mongoDB');
     })
     .catch((err: Error) => {
         console.log('MongoDB connection error. ' + err);
@@ -29,9 +29,10 @@ config();
 const client = new Client({
     intents: [GatewayIntentBits.Guilds],
 });
-client.once(Events.ClientReady, () =>
-    console.log(client.user!.tag + ' has logged in!')
-);
+client.once(Events.ClientReady, () => {
+    console.log(client.user!.tag + ' has logged in to Discord!');
+    console.log('Ready to handle commands...\n');
+});
 client.login(process.env.TOKEN);
 
 const tempFn = () => {
@@ -50,16 +51,20 @@ const auxButtonRec: recordWithCommands = {
 };
 
 async function handleInteraction(interaction: Interaction) {
+    const nameOfUser = interaction.user.displayName;
     if (interaction.isButton()) {
+        console.log(
+            `User ${nameOfUser} pressed a button: ${interaction.customId}`
+        );
         await auxButtonRec[interaction.customId as keyof recordWithCommands](
             interaction
         );
     } else if (interaction.isCommand()) {
+        console.log(
+            `User ${nameOfUser} used a command: ${interaction.commandName}`
+        );
         await commandRec[interaction.commandName as keyof recordWithCommands](
             interaction
-        );
-        console.log(
-            `Discord user ${interaction.user.displayName} used the command: ${interaction.commandName}`
         );
     } else return;
 }
