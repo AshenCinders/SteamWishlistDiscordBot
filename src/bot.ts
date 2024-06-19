@@ -69,5 +69,5 @@ async function handleInteraction(interaction: Interaction) {
     } else return;
 }
 
-// When user runs command.
+// When user runs command or aux interaction is started.
 client.on(Events.InteractionCreate, handleInteraction);
