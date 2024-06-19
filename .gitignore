@@ -6,6 +6,5 @@ coverage
 tsconfig.json
 
 .env
-temp.ts
 
-deploy-commands.ts
+temp.ts
