@@ -3,6 +3,8 @@ import {
     TextInputBuilder,
     TextInputStyle,
     ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
 } from 'discord.js';
 
 /**
@@ -29,4 +31,24 @@ export function newWishlistModal(): ModalBuilder {
         );
     identifierModal.addComponents(textActionRow);
     return identifierModal;
+}
+
+/**
+ * Constructs a refetch button.
+ * @param isDisabled is a bool that decidides of the button
+ *  should be unclickable.
+ * @param label is the text displayed on the button.
+ * @returns A discord button for refetching data.
+ */
+export function newRefetchButton(
+    isDisabled: boolean,
+    label: string
+): ActionRowBuilder<ButtonBuilder> {
+    const buttonRefetch = new ButtonBuilder()
+        .setCustomId('refetch')
+        .setLabel(label)
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(isDisabled);
+
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(buttonRefetch);
 }
