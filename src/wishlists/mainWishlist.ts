@@ -8,8 +8,8 @@ import {
     cyan,
     green,
     gray,
-} from '../mdWrappers';
-import { unixNow } from '../miscHelpers';
+} from '../lib/mdWrappers';
+import { unixNow } from '../lib/miscHelpers';
 
 export type BoolTuple = [true, string] | [false, string];
 export type MaybeWishlist = [true, Wishlist] | [false, string];

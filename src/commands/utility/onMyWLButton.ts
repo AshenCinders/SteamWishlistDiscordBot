@@ -9,7 +9,7 @@ import {
     getNewWishlistData,
     wlToMarkdownCustom,
 } from '../../wishlists/mainWishlist';
-import { unixNow } from '../../miscHelpers';
+import { unixNow } from '../../lib/miscHelpers';
 import { dbGetWishlist, dbUpdateWishlist } from '../../database/mainDB';
 import { wishlistDBType } from '../../database/dbTypes';
 

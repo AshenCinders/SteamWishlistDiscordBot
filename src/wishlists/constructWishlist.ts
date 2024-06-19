@@ -3,7 +3,7 @@ import {
     SteamWLRecGameData,
     SteamWLRecord,
 } from './getWishlistData';
-import { sortWishlist } from '../sortArray';
+import { sortWishlist } from '../lib/sortArray';
 
 export type WLGameRec = {
     appid: number;
