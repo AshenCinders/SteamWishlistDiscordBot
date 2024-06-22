@@ -108,8 +108,11 @@ export function wlToMarkdownCustom(
     choiceRec.showAddedToWLFormatted ??= false;
 
     let fullString =
-        italic('This wishlist contains ' + wl.length.toString() + ' games!') +
-        '\n';
+        wl.length >= 99
+            ? 'This wishlist contains more than 99 games!\n'
+            : 'This wishlist contains ' + wl.length.toString() + ' games!\n';
+    fullString +=
+        italic('Here are as many as we can display in a message!') + '\n';
 
     // Each loop appends one game.
     for (let i = 0; i < wl.length; i++) {
