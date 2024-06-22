@@ -20,6 +20,12 @@ import { wishlistDBType } from '../../database/dbTypes';
  */
 export async function execute(interaction: ButtonInteraction) {
     const nameOfUser = interaction.user.displayName;
+    const autoChoices = {
+        showTags: true,
+        showReviewGrade: true,
+        showReleaseDateFormatted: true,
+        showAddedToWLFormatted: true,
+    };
 
     const fetchTuple = await dbGetWishlist(interaction.user.id);
     if (fetchTuple[0] === false) {
@@ -54,7 +60,7 @@ export async function execute(interaction: ButtonInteraction) {
                     content: wlTuple[1],
                 });
             } else {
-                const displayStr = wlToMarkdownCustom(wlTuple[1], {});
+                const displayStr = wlToMarkdownCustom(wlTuple[1], autoChoices);
                 console.log(`Displayed a wishlist to user ${nameOfUser}`);
                 await modalInteraction.editReply({
                     content: displayStr,
@@ -78,7 +84,7 @@ export async function execute(interaction: ButtonInteraction) {
         console.log(`${nameOfUser}'s wishlist was found in DB`);
 
         const wishlist = fetchTuple[1].wishlistData;
-        const displayStr = wlToMarkdownCustom(wishlist, {});
+        const displayStr = wlToMarkdownCustom(wishlist, autoChoices);
 
         let disableButton = isEligibleToRefetch(fetchTuple[1].unixFetchedAt)
             ? false

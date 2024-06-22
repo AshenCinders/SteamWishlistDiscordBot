@@ -26,7 +26,13 @@ export async function execute(interaction: ButtonInteraction) {
         return;
     }
 
-    const displayStr = wlToMarkdownCustom(wlTuple[1], {});
+    const autoChoices = {
+        showTags: true,
+        showReviewGrade: true,
+        showReleaseDateFormatted: true,
+        showAddedToWLFormatted: true,
+    };
+    const displayStr = wlToMarkdownCustom(wlTuple[1], autoChoices);
     console.log(`Displayed a wishlist to user ${interaction.user.displayName}`);
     interaction.editReply({
         content: displayStr,
