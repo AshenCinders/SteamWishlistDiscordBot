@@ -58,14 +58,14 @@ async function handleInteraction(interaction: Interaction) {
         console.log(
             `User ${nameOfUser} pressed a button: ${interaction.customId}`
         );
-        await auxButtonRec[interaction.customId as keyof recordWithCommands](
-            interaction
-        );
+        const btnFn =
+            auxButtonRec[interaction.customId as keyof recordWithCommands];
+        if (btnFn !== undefined) btnFn(interaction);
     } else if (interaction.isCommand()) {
         console.log(
             `User ${nameOfUser} used a command: ${interaction.commandName}`
         );
-        await commandRec[interaction.commandName as keyof recordWithCommands](
+        commandRec[interaction.commandName as keyof recordWithCommands](
             interaction
         );
     } else return;
