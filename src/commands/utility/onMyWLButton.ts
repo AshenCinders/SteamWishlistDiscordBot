@@ -87,7 +87,6 @@ export async function execute(interaction: ButtonInteraction) {
             disableButton,
             'Update data (after 10min)'
         );
-
         console.log(`Displayed a wishlist to user ${nameOfUser}`);
         const response = await interaction.reply({
             content: displayStr,
@@ -95,7 +94,6 @@ export async function execute(interaction: ButtonInteraction) {
             components: [refetchButton],
         });
 
-        // Handle interaction in another file through bot event handler.
         const collectorFilter = (i: Interaction) =>
             i.user.id === interaction.user.id;
         try {
@@ -104,7 +102,7 @@ export async function execute(interaction: ButtonInteraction) {
                 time: 60_000,
             });
             // Once user clicks button, remove this interaction message.
-            await interaction.deleteReply();
+            interaction.deleteReply();
         } catch (err) {
             console.log('Option to refetch wishlist data timed out');
         }
