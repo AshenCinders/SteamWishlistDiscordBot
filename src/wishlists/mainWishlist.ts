@@ -44,7 +44,8 @@ export function isEligibleToRefetch(unixLastFetch: number): boolean {
  * @returns str without a newline character at the end.
  */
 export function delLastNewline(str: string): string {
-    if (/\n$/.test(str)) return str.slice(0, -2);
+    // \n counts as 1 char.
+    if (/\n$/.test(str)) return str.slice(0, -1);
     else return str;
 }
 
