@@ -91,11 +91,11 @@ export async function getNewWishlistData(
 }
 
 /**
- * Constructs a string with markdown syntax for displaying a whole wishlist.
+ * Constructs a string with markdown syntax for displaying a wishlist.
  * @param wl a wishlist of type Wishlist.
  * @param choiceRec a record of type StringifyWLChoices.
- *  Any property that is  omitted will by default be ignored.
- * @returns a string with markdown syntax.
+ *  Any property that is omitted will by default be ignored.
+ * @returns a string with markdown syntax which will be under 2000 characters.
  */
 export function wlToMarkdownCustom(
     wl: Wishlist,
@@ -142,6 +142,10 @@ export function wlToMarkdownCustom(
             // Remove last newline char.
             otherInfo = delLastNewline(otherInfo);
             otherInfo = wrapColors(otherInfo);
+
+            // Needed for Discord message limit.
+            if (fullString.length + otherInfo.length >= 2000) break;
+
             fullString += otherInfo;
         }
     }
