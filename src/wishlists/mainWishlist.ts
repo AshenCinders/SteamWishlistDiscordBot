@@ -129,12 +129,12 @@ export function wlToMarkdownCustom(
         }
         if (choiceRec.showReleaseDateFormatted === true) {
             otherInfo +=
-                green('Game Released: ' + game.releaseDateFormatted) + '\n';
+                green('Release Date: ' + game.releaseDateFormatted) + '\n';
         }
         if (choiceRec.showAddedToWLFormatted === true) {
             otherInfo +=
                 gray(
-                    'Date player added to wishlist: ' + game.addedToWLFormatted
+                    'Date when added to wishlist: ' + game.addedToWLFormatted
                 ) + '\n';
         }
 
