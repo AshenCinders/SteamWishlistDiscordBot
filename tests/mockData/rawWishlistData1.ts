@@ -1,3 +1,32 @@
+//Has release_date, added, as string.
+export const rawWishlistGame1 = {
+    'name': 'Superliminal',
+    'review_desc': 'Very Positive',
+    'release_date': '1604599094',
+    'release_string': '5 Nov, 2020',
+    'review_css': 'positive',
+    'priority': 55,
+    'added': '1698487770',
+    'tags': ['Puzzle', 'First-Person', 'Surreal', 'Narration', 'Physics'],
+};
+//Has release_date, added, as number.
+export const rawWishlistGame2 = {
+    'name': "Baldur's Gate 3",
+    'review_desc': 'Overwhelmingly Positive',
+    'release_date': 1691074826,
+    'release_string': '3 Aug, 2023',
+    'review_css': 'positive',
+    'priority': 58,
+    'added': 1675486529,
+    'tags': [
+        'RPG',
+        'Choices Matter',
+        'Character Customization',
+        'Story Rich',
+        'Turn-Based Combat',
+    ],
+};
+
 export const rawWishlistData1 = {
     '526870': {
         'name': 'Satisfactory',
