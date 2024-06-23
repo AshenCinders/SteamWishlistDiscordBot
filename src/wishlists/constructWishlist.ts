@@ -85,7 +85,7 @@ export function setAddedToWLFormatted(
     if (month.length === 1) month = '0' + month;
     if (date.length === 1) date = '0' + date;
 
-    target.addedToWLFormatted = year + '-' + month + '-' + date;
+    target.addedToWLFormatted = `${year}-${month}-${date}`;
 }
 
 /**
