@@ -113,16 +113,14 @@ function constructWLElem(
  * Creates a new Wishlist data structure.
  *  that is sorted based on user WL ranking priority.
  * @param wlFetchData is a JS object containing wishlist data from Steam.
- * @returns A wishlist structure of type Wishlist.
+ * @returns A Wishlist.
  */
 export function constructWishlist(wlFetchData: SteamWLRecord): Wishlist {
-    let wlArr: Wishlist = [];
+    let newWishlist: Wishlist = [];
 
     for (const gameKey in wlFetchData) {
-        wlArr.push(constructWLElem(gameKey, wlFetchData[gameKey]));
+        newWishlist.push(constructWLElem(gameKey, wlFetchData[gameKey]));
     }
 
-    sortWishlist(wlArr);
-
-    return wlArr;
+    return sortWishlist(newWishlist);
 }

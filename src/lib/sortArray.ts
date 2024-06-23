@@ -75,11 +75,16 @@ export function quicksort<T>(
 }
 
 /**
- * Takes a wishlist array and sorts it in-place based on the priority property.
- * @param wlArr is of type WishlistArr
+ * Takes a Wishlist and returns a sorted Wishlist based on the priority property.
+ * @param wishlist is a wishlist to be sorted.
  */
-export function sortWishlist(wlArr: Wishlist): void {
-    // TODO filter out priority=0 and append after sort
+export function sortWishlist(wishlist: Wishlist): Wishlist {
+    const prioZero = wishlist.filter(({ priority }) => {
+        return priority === 0;
+    });
+    const prioNonZero = wishlist.filter(({ priority }) => {
+        return priority !== 0;
+    });
 
     const condByPriority = (
         array: Wishlist,
@@ -89,5 +94,6 @@ export function sortWishlist(wlArr: Wishlist): void {
         return array[index].priority <= pivot.priority;
     };
 
-    quicksort(wlArr, condByPriority);
+    quicksort(prioNonZero, condByPriority);
+    return [...prioNonZero, ...prioZero];
 }
