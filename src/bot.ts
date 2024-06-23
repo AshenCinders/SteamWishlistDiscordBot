@@ -36,10 +36,6 @@ client.once(Events.ClientReady, () => {
 });
 client.login(process.env.TOKEN);
 
-const tempFn = () => {
-    console.log('Temp function was called');
-};
-
 type recordWithCommands = Record<string, Function>;
 const commandRec: recordWithCommands = {
     ping: ping.execute,
