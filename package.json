@@ -1,10 +1,10 @@
 {
     "scripts": {
-        "start": "ts-node src/bot",
+        "start": "ts-node src/bot.ts",
         "push": "ts-node deploy-commands.ts",
         "test": "jest",
         "tests": "jest",
-        "dev": "eslint && ts-node src/bot -p -e"
+        "dev": "eslint && ts-node src/bot.ts -p -e"
     },
     "devDependencies": {
         "@eslint/js": "^8.56.0",
