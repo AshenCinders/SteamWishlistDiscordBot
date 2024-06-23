@@ -65,8 +65,11 @@ function setReleaseDateFormatted(
     target.releaseDateFormatted = source.release_string;
 }
 
-function setAddedToWLUnix(source: SteamWLRecGameData, target: WLGameRec): void {
-    target.addedToWLUnix = source.added;
+export function setAddedToWLUnix(
+    source: SteamWLRecGameData,
+    target: WLGameRec
+): void {
+    target.addedToWLUnix = Number(source.added);
 }
 
 export function setAddedToWLFormatted(
