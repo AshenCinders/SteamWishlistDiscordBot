@@ -10,7 +10,8 @@ export type SteamWLRecGameData = {
     release_date: string | number; // Unix time in string OR number form
     // Yes Steam is inconsistent if it returns number or string on release_date property.
     release_string: string; // E.g. '4 Aug, 2022'
-    added: number; // Unix time of when user added to WL
+    added: string | number; // Unix time of when user added to WL in string
+    // (OR possibly number) form.
     tags: Array<string>; // E.g. [ 'Co-op', 'Management', 'Cooking', 'Roguelite', 'Building' ]
 
     // Unused extra properties
