@@ -10,22 +10,7 @@ import {
     green,
     gray,
 } from '../lib/mdWrappers';
-import { unixNow } from '../lib/miscHelpers';
-
-/**
- * Rough check to avoid parsing long/empty strings.
- * @param str to be checked.
- * @returns true if 0 < length < 51, else false.
- */
-export function isValidString(str: any): str is string {
-    return typeof str !== 'string'
-        ? false
-        : str.length > 50
-          ? false
-          : str.length < 1
-            ? false
-            : true;
-}
+import { unixNow, isValidString } from '../lib/miscHelpers';
 
 /**
  * Check if enough time has passed since last fetch request.
