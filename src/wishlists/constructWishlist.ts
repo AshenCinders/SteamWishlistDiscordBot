@@ -76,10 +76,11 @@ export function setAddedToWLFormatted(
     source: SteamWLRecGameData,
     target: WLGameRec
 ): void {
-    const fullDate = new Date(source.added * 1000);
-    const year = fullDate.getFullYear().toString();
-    let month = fullDate.getMonth().toString();
-    let date = fullDate.getDate().toString();
+    const fullDate = new Date(Number(source.added) * 1000);
+    const year = fullDate.getUTCFullYear().toString();
+    // Get month has Jan === 0.
+    let month = (fullDate.getUTCMonth() + 1).toString();
+    let date = fullDate.getUTCDate().toString();
 
     if (month.length === 1) month = '0' + month;
     if (date.length === 1) date = '0' + date;
