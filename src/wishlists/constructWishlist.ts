@@ -10,7 +10,7 @@ import { sortWishlist } from '../lib/sortArray';
 /**
  * @returns a new WLGameRec record with all properties as empty.
  */
-function newWLGameRecTemplate(): WLGameRec {
+export function newWLGameRecTemplate(): WLGameRec {
     return {
         appid: 0,
         priority: 0,
@@ -51,7 +51,7 @@ function setReviewGrade(source: SteamWLRecGameData, target: WLGameRec): void {
     target.reviewGrade = source.review_desc;
 }
 
-function setReleaseDateUnix(
+export function setReleaseDateUnix(
     source: SteamWLRecGameData,
     target: WLGameRec
 ): void {
@@ -69,7 +69,7 @@ function setAddedToWLUnix(source: SteamWLRecGameData, target: WLGameRec): void {
     target.addedToWLUnix = source.added;
 }
 
-function setAddedToWLFormatted(
+export function setAddedToWLFormatted(
     source: SteamWLRecGameData,
     target: WLGameRec
 ): void {
