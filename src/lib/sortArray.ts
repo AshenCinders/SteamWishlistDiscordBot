@@ -93,7 +93,7 @@ export function sortWishlist(wishlist: Wishlist): Wishlist {
     ): boolean => {
         return array[index].priority <= pivot.priority;
     };
-
     quicksort(prioNonZero, condByPriority);
+
     return [...prioNonZero, ...prioZero];
 }
