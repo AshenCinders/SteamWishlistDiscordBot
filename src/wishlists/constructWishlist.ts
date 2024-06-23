@@ -55,7 +55,7 @@ function setReleaseDateUnix(
     source: SteamWLRecGameData,
     target: WLGameRec
 ): void {
-    target.releaseDateUnix = Number(source.release_date);
+    target.releaseDateUnix = Number(source.release_date.toString());
 }
 
 function setReleaseDateFormatted(
