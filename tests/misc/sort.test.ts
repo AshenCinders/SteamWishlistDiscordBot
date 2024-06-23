@@ -1,5 +1,5 @@
 import { quicksort, sortWishlist } from '../../src/lib/sortArray';
-import { testWishlist1 } from '../mockFetchData/wishlist1';
+import { testWishlist1 } from '../mockData/wishlist1';
 
 describe('Generic quicksort', () => {
     const testArr = [
