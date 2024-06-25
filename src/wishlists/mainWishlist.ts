@@ -79,7 +79,6 @@ export function wlToMarkdownCustom(
     // Each loop appends one game.
     for (let i = 0; i < wl.length; i++) {
         const game = wl[i];
-        fullString += bold(game.name) + '\n';
 
         let otherInfo = '';
         if (choiceRec.showTags === true) {
@@ -106,8 +105,10 @@ export function wlToMarkdownCustom(
             otherInfo = wrapColors(otherInfo);
 
             // Needed for Discord message limit.
-            if (fullString.length + otherInfo.length >= 2000) break;
+            if (fullString.length + game.name.length + otherInfo.length >= 2000)
+                break;
 
+            fullString += bold(game.name) + '\n';
             fullString += otherInfo;
         }
     }
