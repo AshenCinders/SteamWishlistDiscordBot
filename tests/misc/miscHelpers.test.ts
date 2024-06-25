@@ -25,6 +25,13 @@ describe('string checker gives correct boolean', () => {
             )
         ).toBeFalsy;
 
+        // Input is not a string
+        expect(isValidString(42)).toBeFalsy;
+        expect(isValidString(['teststring in array'])).toBeFalsy;
+        expect(isValidString({})).toBeFalsy;
+        expect(isValidString(true)).toBeFalsy;
+        expect(isValidString(undefined)).toBeFalsy;
+
         // Edge cases
         expect(isValidString('')).toBeFalsy;
         expect(
