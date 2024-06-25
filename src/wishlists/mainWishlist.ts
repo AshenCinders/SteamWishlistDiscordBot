@@ -10,7 +10,12 @@ import {
     green,
     gray,
 } from '../lib/mdWrappers';
-import { unixNow, isValidString } from '../lib/miscHelpers';
+import {
+    unixNow,
+    isValidString,
+    delLastNewline,
+    stringArrayToString,
+} from '../lib/miscHelpers';
 
 /**
  * Check if enough time has passed since last fetch request.
@@ -19,35 +24,6 @@ import { unixNow, isValidString } from '../lib/miscHelpers';
  */
 export function isEligibleToRefetch(unixLastFetch: number): boolean {
     return unixNow() - unixLastFetch > 600;
-}
-
-/**
- * If a newline character exists at the end of input string str,
- *  it will then get removed.
- * Function does not require input str to have a newline at the end.
- * @param str is any string.
- * @returns str without a newline character at the end.
- */
-export function delLastNewline(str: string): string {
-    // \n counts as 1 char.
-    if (/\n$/.test(str)) return str.slice(0, -1);
-    else return str;
-}
-
-/**
- * Converts an array of strings to a single string.
- * @param inputArr an array with all elements as strings.
- * @returns a string with all elements in a single string separated by commas.
- */
-export function stringArrayToString(inputArr: Array<string>): string {
-    let listStr = '';
-    for (let i = 0; i < inputArr.length; i++) {
-        listStr += inputArr[i].toString() + ', ';
-    }
-    // Remove last comma.
-    listStr = listStr.slice(0, -1);
-
-    return listStr;
 }
 
 /**
