@@ -1,21 +1,23 @@
 // All exported types used by functions for wislists.
 // Excluding DB specific types.
 
-export type SteamWLRecGameID = string; // Steam game ID which is a number in string form.
+// Steam game ID which is a number in string form.
+export type SteamWLRecGameID = string;
+
 // Fields are predefined by Steam.
 export type SteamWLRecGameData = {
     name: string; // Game title.
     priority: number; // User/default priority list ordering.
     review_desc: string; // E.g. 'Mostly Positive'
     release_date: string | number; // Unix time in string OR number form
-    // Yes Steam is inconsistent if it returns number or string on release_date property.
     release_string: string; // E.g. '4 Aug, 2022'
-    added: string | number; // Unix time of when user added to WL in string
-    // (OR possibly number) form.
-    tags: Array<string>; // E.g. [ 'Co-op', 'Management', 'Cooking', 'Roguelite', 'Building' ]
+    // Unix time of when user added to WL in string (OR possibly number) form.
+    added: string | number;
+    // E.g. [ 'Co-op', 'Management', 'Cooking', 'Roguelite', 'Building' ]
+    tags: Array<string>;
 
-    // Unused extra properties
-    // Generic to avoid writing in all possible (and inconsistent with types) properties.
+    // Unused extra properties that comes with the Steam wishlist data.
+    // Generic to avoid writing in all possible properties (and types, since Steam is inconsistent with datatypes).
     [k: string]:
         | number
         | string
@@ -23,6 +25,7 @@ export type SteamWLRecGameData = {
         | boolean
         | undefined;
 };
+
 // Each entry represents a game.
 export type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
 export type RawMaybeWishlist = [true, SteamWLRecord] | [false, string];
@@ -46,7 +49,7 @@ export type Wishlist = Array<WLGameRec>;
 export type BoolTuple = [true, string] | [false, string];
 export type MaybeWishlist = [true, Wishlist] | [false, string];
 
-// Choice record for wishlist to markdown function.
+// Choice record for wishlist to markdown custom function.
 export type StringifyWLChoices = {
     showTags?: boolean;
     showReviewGrade?: boolean;
