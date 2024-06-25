@@ -54,14 +54,15 @@ export async function getNewWishlistData(
 /**
  * Constructs a string with markdown syntax for displaying a wishlist.
  * @param wl a wishlist of type Wishlist.
- * @param choiceRec a record of type StringifyWLChoices.
- *  Any property that is omitted will by default be ignored.
+ * @param choiceRec an optional record of type StringifyWLChoices.
+ *  Any property that is omitted will by default be set to false.
  * @returns a string with markdown syntax which will be under 2000 characters.
  */
 export function wlToMarkdownCustom(
     wl: Wishlist,
-    choiceRec: StringifyWLChoices
+    choiceRec?: StringifyWLChoices
 ): string {
+    choiceRec ??= {};
     // Assigning default hide values if caller omitted any.
     choiceRec.showTags ??= false;
     choiceRec.showReviewGrade ??= false;
