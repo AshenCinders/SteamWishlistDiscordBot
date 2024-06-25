@@ -46,8 +46,8 @@ export function stringArrayToString(inputArr: Array<string>): string {
     for (let i = 0; i < inputArr.length; i++) {
         listStr += inputArr[i].toString() + ', ';
     }
-    // Remove last comma.
-    listStr = listStr.slice(0, -1);
+    // Remove last comma and space.
+    listStr = listStr.slice(0, -2);
 
     return listStr;
 }
