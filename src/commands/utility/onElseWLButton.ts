@@ -39,7 +39,7 @@ export async function execute(interaction: ButtonInteraction) {
                 content: wlTuple[1],
             });
         } else {
-            const displayStr = wlToMarkdownCustom(wlTuple[1], {});
+            const displayStr = wlToMarkdownCustom(wlTuple[1]);
             console.log(`Displayed a wishlist to user ${nameOfUser}`);
             await modalInteraction.editReply({
                 content: displayStr,
