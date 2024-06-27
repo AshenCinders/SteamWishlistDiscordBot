@@ -86,7 +86,7 @@ function steamIdentifierToURL(
  * @param inputString from user.
  * @returns true if valid, false if invalid.
  */
-function isValidSteam64(inputString: string): boolean {
+export function isValidSteam64(inputString: string): boolean {
     return !/^\d*$/.test(inputString)
         ? false
         : inputString.length !== 17
@@ -100,7 +100,7 @@ function isValidSteam64(inputString: string): boolean {
  * @param inputString from user.
  * @returns true if valid, false if invalid.
  */
-function isValidSteamUniqueID(inputString: string): boolean {
+export function isValidSteamUniqueID(inputString: string): boolean {
     return !/^[A-Za-z0-9_.~-]*$/.test(inputString)
         ? false
         : inputString.length < 3
