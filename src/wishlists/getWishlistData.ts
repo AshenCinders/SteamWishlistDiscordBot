@@ -65,7 +65,7 @@ export async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
  * @precondition steam64OrUniqueName must be a valid steam64 or ID format.
  * @returns a steam url string for fetching wishlist data.
  */
-function steamIdentifierToURL(
+export function steamIdentifierToURL(
     steam64OrUniqueName: string,
     isSteam64: boolean
 ): string {

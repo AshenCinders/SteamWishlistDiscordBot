@@ -63,6 +63,20 @@ describe('steam uniqueid from custom URL checker validator', () => {
 
 // End of input validation functions.
 
+describe('steam id to URL function formats URL based on input ID', () => {
+    test('correctly for Steam64s', () => {
+        expect(steamIdentifierToURL('76561111111111111', true)).toBe(
+            'https://store.steampowered.com/wishlist/profiles/76561111111111111/wishlistdata/'
+        );
+    });
+
+    test('correctly for custom names', () => {
+        expect(steamIdentifierToURL('ACustomNameFromCustomUrl', false)).toBe(
+            'https://store.steampowered.com/wishlist/id/ACustomNameFromCustomUrl/wishlistdata/'
+        );
+    });
+});
+
 // Does not validate actual URLs, only possible responses from Steam.
 describe('steam data fetch function handling invalid and valid responses', () => {
     const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(
@@ -113,3 +127,41 @@ describe('steam data fetch function handling invalid and valid responses', () =>
     });
 });
 
+describe('steam identifier to wishlist data function is', () => {
+    // If steam fetch function gets called, always return valid for these tests.
+    jest.spyOn(global, 'fetch').mockImplementation(
+        jest.fn(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(rawWishlistData2),
+            })
+        ) as jest.Mock
+    );
+
+    test('correct for Steam64Ids', async () => {
+        expect((await newWishlistRecord('76561111111111111'))[0]).toBe(true);
+        expect((await newWishlistRecord('12345678901234567'))[0]).toBe(true);
+    });
+
+    test('correct for names in custom-URLs', async () => {
+        expect((await newWishlistRecord('Nivq'))[0]).toBe(true);
+        expect((await newWishlistRecord('ThisCouldBeAValidName56'))[0]).toBe(
+            true
+        );
+    });
+
+    test('correct for other invalid user identifiers', async () => {
+        expect((await newWishlistRecord(''))[0]).toBe(false);
+        expect((await newWishlistRecord('ab'))[0]).toBe(false);
+        expect(
+            (
+                await newWishlistRecord(
+                    'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooongname'
+                )
+            )[0]
+        ).toBe(false);
+        expect((await newWishlistRecord('some^^disallowedSymbols{¤'))[0]).toBe(
+            false
+        );
+    });
+});
