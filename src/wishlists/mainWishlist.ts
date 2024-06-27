@@ -99,16 +99,16 @@ export function wlToMarkdownCustom(
                 ) + '\n';
         }
 
+        // Needed for Discord message limit.
+        if (fullString.length + game.name.length + otherInfo.length >= 2000)
+            break;
+
+        fullString += bold(game.name) + '\n';
         if (otherInfo !== '') {
             // Remove last newline char.
             otherInfo = delLastNewline(otherInfo);
             otherInfo = wrapColors(otherInfo);
 
-            // Needed for Discord message limit.
-            if (fullString.length + game.name.length + otherInfo.length >= 2000)
-                break;
-
-            fullString += bold(game.name) + '\n';
             fullString += otherInfo;
         }
     }
