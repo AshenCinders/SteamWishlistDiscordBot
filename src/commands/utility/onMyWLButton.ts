@@ -57,6 +57,7 @@ export async function execute(interaction: ButtonInteraction) {
                     `Steam failed to find a wishlist from user ${nameOfUser}'s ID input`
                 );
                 await modalInteraction.editReply({
+                    // Display reason why the fetch failed.
                     content: wlTuple[1],
                 });
             } else {
