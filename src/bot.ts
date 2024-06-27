@@ -22,7 +22,7 @@ mongoose
     })
     .catch((err: Error) => {
         console.log('MongoDB connection error. ' + err);
-        //process.exit();
+        process.exit();
     });
 
 // Connect to Discord server.
