@@ -16,7 +16,7 @@ import { SteamWLRecord, RawMaybeWishlist } from './typesWishlist';
  *  and either a Record containing game-ids with game-data records,
  *  or a string explaining what caused the failure.
  */
-async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
+export async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
     const wishlistRecordTuple = await fetch(url)
         .then(async (res) => {
             /* There is no success: true/false property as there is in 
