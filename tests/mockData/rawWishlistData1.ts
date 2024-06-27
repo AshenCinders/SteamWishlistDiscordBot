@@ -27,6 +27,7 @@ export const rawWishlistGame2 = {
     ],
 };
 
+// Contains 6 games.
 export const rawWishlistData1 = {
     '526870': {
         'name': 'Satisfactory',
@@ -278,6 +279,100 @@ export const rawWishlistData1 = {
         'is_free_game': false,
         'deck_compat': 0,
         'prerelease': 1,
+        'win': 1,
+        'mac': 1,
+        'linux': 1,
+    },
+};
+
+// Contains 2 games.
+export const rawWishlistData2 = {
+    '610370': {
+        'name': 'Desperados III',
+        'capsule':
+            'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/610370/header_292x136.jpg?t=1699253975',
+        'review_score': 9,
+        'review_desc': 'Overwhelmingly Positive',
+        'reviews_total': '9,129',
+        'reviews_percent': 97,
+        'release_date': '1592326800',
+        'release_string': '16 Jun, 2020',
+        'platform_icons':
+            '\u003Cspan class="platform_img win"\u003E\u003C/span\u003E\u003Cspan class="platform_img mac"\u003E\u003C/span\u003E\u003Cspan class="platform_img linux"\u003E\u003C/span\u003E',
+        'subs': [
+            {
+                'packageid': 162909,
+                'bundleid': null,
+                'discount_block':
+                    '\u003Cdiv class="discount_block discount_block_large" data-price-final="999" data-bundlediscount="0" data-discount="75" role="link" aria-label="75% off. 39,99€ normally, discounted to 9,99€"\u003E\u003Cdiv class="discount_pct"\u003E-75%\u003C/div\u003E\u003Cdiv class="discount_prices"\u003E\u003Cdiv class="discount_original_price"\u003E39,99€\u003C/div\u003E\u003Cdiv class="discount_final_price"\u003E9,99€\u003C/div\u003E\u003C/div\u003E\u003C/div\u003E',
+                'discount_pct': 75,
+                'price': '999',
+            },
+        ],
+        'type': 'Game',
+        'screenshots': [
+            'ss_0278ff2c4d3a7bc4b2e2968f27b07db332d81edf.jpg',
+            'ss_f6460db130b27d95f8fc883045a648c256db40c6.jpg',
+            'ss_94bf6cd34055f7219290e6191a124eaa9c40f6e3.jpg',
+            'ss_e772cbea173029c7a4182a70e3f13de6a7f26e16.jpg',
+        ],
+        'review_css': 'positive',
+        'priority': 37,
+        'added': 1712090930,
+        'background':
+            'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/610370/page_bg_generated_v6b.jpg?t=1699253975',
+        'rank': 750,
+        'tags': [
+            'Strategy',
+            'Real Time Tactics',
+            'Stealth',
+            'Western',
+            'Tactical',
+        ],
+        'is_free_game': false,
+        'deck_compat': '2',
+        'win': 1,
+        'mac': 1,
+        'linux': 1,
+    },
+    '632000': {
+        'name': 'CrossCells',
+        'capsule':
+            'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/632000/header_292x136.jpg?t=1560433944',
+        'review_score': 8,
+        'review_desc': 'Very Positive',
+        'reviews_total': '768',
+        'reviews_percent': 85,
+        'release_date': '1495787058',
+        'release_string': '26 May, 2017',
+        'platform_icons':
+            '\u003Cspan class="platform_img win"\u003E\u003C/span\u003E\u003Cspan class="platform_img mac"\u003E\u003C/span\u003E\u003Cspan class="platform_img linux"\u003E\u003C/span\u003E',
+        'subs': [
+            {
+                'packageid': 172168,
+                'bundleid': null,
+                'discount_block':
+                    '\u003Cdiv class="discount_block discount_block_large no_discount" data-price-final="299" data-bundlediscount="0" data-discount="0"\u003E\u003Cdiv class="discount_prices"\u003E\u003Cdiv class="discount_final_price"\u003E2,99€\u003C/div\u003E\u003C/div\u003E\u003C/div\u003E',
+                'discount_pct': null,
+                'price': '299',
+            },
+        ],
+        'type': 'Game',
+        'screenshots': [
+            'ss_0446a482a0dd9892abc37245263fb88f7c1898fc.jpg',
+            'ss_36bdec2d9a1db5a662be8eabec59111652920d3e.jpg',
+            'ss_591b652a300ed84011fd081a0a1fdeadea9c2151.jpg',
+            'ss_e1c264ed3bf5a48ca35c482f81ede227bc5619d4.jpg',
+        ],
+        'review_css': 'positive',
+        'priority': 38,
+        'added': 1708866134,
+        'background':
+            'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/610370/page_bg_generated_v6b.jpg?t=1699253975',
+        'rank': 1000,
+        'tags': ['Casual', 'Indie', 'Puzzle', 'Strategy', 'Minimalist'],
+        'is_free_game': false,
+        'deck_compat': 0,
         'win': 1,
         'mac': 1,
         'linux': 1,
