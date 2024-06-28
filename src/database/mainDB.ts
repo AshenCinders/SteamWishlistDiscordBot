@@ -1,9 +1,11 @@
-import { DBMaybeWishlist, wishlistDBType } from '../projectTypes';
-import { BoolTuple } from '../projectTypes';
+import { DBMaybeWishlistChunkTuple, DBWishlistChunk } from '../projectTypes';
+import { OutcomeTuple } from '../projectTypes';
 import { WishlistModel } from './model/Wishlist';
 import { isValidString } from '../lib/miscHelpers';
 
-export async function dbUpdateWishlist(wl: wishlistDBType): Promise<BoolTuple> {
+export async function dbUpdateWishlist(
+    wl: DBWishlistChunk
+): Promise<OutcomeTuple> {
     const queryFn =
         (await WishlistModel.exists({
             discordIdentifier: wl.discordIdentifier,
@@ -30,7 +32,7 @@ export async function dbUpdateWishlist(wl: wishlistDBType): Promise<BoolTuple> {
  */
 export async function dbGetWishlist(
     discordID: string
-): Promise<DBMaybeWishlist> {
+): Promise<DBMaybeWishlistChunkTuple> {
     /* Extra save check incase discord handles user inputs as anything other 
     than a string. */
     const inputString = discordID.toString();
@@ -58,7 +60,9 @@ export async function dbGetWishlist(
     }
 }
 
-export async function dbDeleteWishlist(discordID: string): Promise<BoolTuple> {
+export async function dbDeleteWishlist(
+    discordID: string
+): Promise<OutcomeTuple> {
     const inputString = discordID.toString();
     if (!isValidString(inputString))
         return [false, "The input you've written is invalid."];

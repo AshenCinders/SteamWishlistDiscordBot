@@ -28,11 +28,11 @@ export type SteamWLRecGameData = {
 
 // Each entry represents a game.
 export type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
-export type RawMaybeWishlist = [true, SteamWLRecord] | [false, string];
+export type MaybeRawWLTuple = [true, SteamWLRecord] | [false, string];
 
 // WISHLIST TYPES
 // For constructed Wishlists.
-export type WLGameRec = {
+export type WishlistGame = {
     appid: number;
     priority: number;
     name: string;
@@ -45,10 +45,10 @@ export type WLGameRec = {
     addedToWLUnix: number;
     addedToWLFormatted: string;
 };
-export type Wishlist = Array<WLGameRec>;
+export type Wishlist = Array<WishlistGame>;
 
-export type BoolTuple = [true, string] | [false, string];
-export type MaybeWishlist = [true, Wishlist] | [false, string];
+export type OutcomeTuple = [true, string] | [false, string];
+export type MaybeWishlistTuple = [true, Wishlist] | [false, string];
 
 // Choice record for wishlist to markdown custom function.
 export type StringifyWLChoices = {
@@ -59,10 +59,12 @@ export type StringifyWLChoices = {
 };
 
 // DATABASE TYPES
-export type wishlistDBType = {
+export type DBWishlistChunk = {
     discordIdentifier: string;
     givenIdentifier: string;
     unixFetchedAt: number;
     wishlistData: Wishlist;
 };
-export type DBMaybeWishlist = [true, wishlistDBType] | [false, string];
+export type DBMaybeWishlistChunkTuple =
+    | [true, DBWishlistChunk]
+    | [false, string];

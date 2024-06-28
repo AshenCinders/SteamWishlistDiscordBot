@@ -1,6 +1,6 @@
 import { ButtonInteraction } from 'discord.js';
 import { dbGetWishlist, dbUpdateWishlist } from '../../database/mainDB';
-import { wishlistDBType } from '../../projectTypes';
+import { DBWishlistChunk } from '../../projectTypes';
 import {
     wlToMarkdownCustom,
     getNewWishlistData,
@@ -39,7 +39,7 @@ export async function execute(interaction: ButtonInteraction) {
     });
 
     // Store to DB
-    const dbWishlistData: wishlistDBType = {
+    const dbWishlistData: DBWishlistChunk = {
         givenIdentifier: givenID,
         discordIdentifier: interaction.user.id,
         unixFetchedAt: unixNow(),

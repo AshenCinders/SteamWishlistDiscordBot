@@ -4,7 +4,7 @@
 // For further reading regarding SteamIDs:
 // https://developer.valvesoftware.com/wiki/SteamID
 
-import { SteamWLRecord, RawMaybeWishlist } from '../projectTypes';
+import { SteamWLRecord, MaybeRawWLTuple } from '../projectTypes';
 
 /**
  * Takes a valid withlist API url and gets wishlist data from Steam.
@@ -16,7 +16,7 @@ import { SteamWLRecord, RawMaybeWishlist } from '../projectTypes';
  *  and either a Record containing game-ids with game-data records,
  *  or a string explaining what caused the failure.
  */
-export async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
+export async function fetchFromSteam(url: string): Promise<MaybeRawWLTuple> {
     const wishlistRecordTuple = await fetch(url)
         .then(async (res) => {
             /* There is no success: true/false property as there is in 
@@ -49,7 +49,7 @@ export async function fetchFromSteam(url: string): Promise<RawMaybeWishlist> {
         ];
     }
 
-    return wishlistRecordTuple as RawMaybeWishlist;
+    return wishlistRecordTuple as MaybeRawWLTuple;
 }
 
 /**
@@ -119,7 +119,7 @@ export function isValidSteamUniqueID(inputString: string): boolean {
  */
 export async function newWishlistRecord(
     userInput: string
-): Promise<RawMaybeWishlist> {
+): Promise<MaybeRawWLTuple> {
     let validURL: string;
     if (isValidSteam64(userInput))
         validURL = steamIdentifierToURL(userInput, true);

@@ -1,4 +1,4 @@
-import { WLGameRec, Wishlist } from '../projectTypes';
+import { WishlistGame, Wishlist } from '../projectTypes';
 
 // Abstracted function for performance.
 // Use quicksort for as interface to sort.
@@ -89,7 +89,7 @@ export function sortWishlist(wishlist: Wishlist): Wishlist {
     const condByPriority = (
         array: Wishlist,
         index: number,
-        pivot: WLGameRec
+        pivot: WishlistGame
     ): boolean => {
         return array[index].priority <= pivot.priority;
     };

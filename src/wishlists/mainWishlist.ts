@@ -1,4 +1,8 @@
-import { Wishlist, MaybeWishlist, StringifyWLChoices } from '../projectTypes';
+import {
+    Wishlist,
+    MaybeWishlistTuple,
+    StringifyWLChoices,
+} from '../projectTypes';
 import { constructWishlist } from './constructWishlist';
 import { newWishlistRecord } from './getWishlistData';
 import {
@@ -36,7 +40,7 @@ export function isEligibleToRefetch(unixLastFetch: number): boolean {
  */
 export async function getNewWishlistData(
     userIdentifier: string
-): Promise<MaybeWishlist> {
+): Promise<MaybeWishlistTuple> {
     const inputString = userIdentifier.toString();
     if (!isValidString(inputString))
         return [false, "The input you've written is invalid."];
@@ -48,7 +52,7 @@ export async function getNewWishlistData(
         const createdWL: Wishlist = constructWishlist(fetchTuple[1]);
         return [true, createdWL];
     });
-    return result as MaybeWishlist;
+    return result as MaybeWishlistTuple;
 }
 
 /**

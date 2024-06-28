@@ -11,7 +11,7 @@ import {
 } from '../../wishlists/mainWishlist';
 import { unixNow } from '../../lib/miscHelpers';
 import { dbGetWishlist, dbUpdateWishlist } from '../../database/mainDB';
-import { wishlistDBType } from '../../projectTypes';
+import { DBWishlistChunk } from '../../projectTypes';
 
 /**
  * Interaction to view 'My wishlist'. If the user is not in DB, then they are prompted to write their identifier into a modal.
@@ -68,7 +68,7 @@ export async function execute(interaction: ButtonInteraction) {
                 });
 
                 // Store to DB
-                const dbWishlistData: wishlistDBType = {
+                const dbWishlistData: DBWishlistChunk = {
                     givenIdentifier: textInput,
                     discordIdentifier: interaction.user.id,
                     unixFetchedAt: unixNow(),

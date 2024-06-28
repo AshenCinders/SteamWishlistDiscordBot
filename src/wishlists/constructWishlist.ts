@@ -2,7 +2,7 @@ import {
     SteamWLRecGameID,
     SteamWLRecGameData,
     SteamWLRecord,
-    WLGameRec,
+    WishlistGame,
     Wishlist,
 } from '../projectTypes';
 import { sortWishlist } from '../lib/sortArray';
@@ -10,7 +10,7 @@ import { sortWishlist } from '../lib/sortArray';
 /**
  * @returns a new WLGameRec record with all properties as empty.
  */
-export function newWLGameRecTemplate(): WLGameRec {
+export function newWLGameRecTemplate(): WishlistGame {
     return {
         appid: 0,
         priority: 0,
@@ -31,50 +31,53 @@ export function newWLGameRecTemplate(): WLGameRec {
  * @param appid raw key string for a wishlist game object fetched from Steam.
  * @param target the target WishlistArr element.
  */
-function setAppid(appid: string, target: WLGameRec): void {
+function setAppid(appid: string, target: WishlistGame): void {
     target.appid = Number(appid);
 }
 
-function setPriority(source: SteamWLRecGameData, target: WLGameRec): void {
+function setPriority(source: SteamWLRecGameData, target: WishlistGame): void {
     target.priority = source.priority;
 }
 
-function setName(source: SteamWLRecGameData, target: WLGameRec): void {
+function setName(source: SteamWLRecGameData, target: WishlistGame): void {
     target.name = source.name;
 }
 
-function setTags(source: SteamWLRecGameData, target: WLGameRec): void {
+function setTags(source: SteamWLRecGameData, target: WishlistGame): void {
     target.tags = source.tags;
 }
 
-function setReviewGrade(source: SteamWLRecGameData, target: WLGameRec): void {
+function setReviewGrade(
+    source: SteamWLRecGameData,
+    target: WishlistGame
+): void {
     target.reviewGrade = source.review_desc;
 }
 
 export function setReleaseDateUnix(
     source: SteamWLRecGameData,
-    target: WLGameRec
+    target: WishlistGame
 ): void {
     target.releaseDateUnix = Number(source.release_date.toString());
 }
 
 function setReleaseDateFormatted(
     source: SteamWLRecGameData,
-    target: WLGameRec
+    target: WishlistGame
 ): void {
     target.releaseDateFormatted = source.release_string;
 }
 
 export function setAddedToWLUnix(
     source: SteamWLRecGameData,
-    target: WLGameRec
+    target: WishlistGame
 ): void {
     target.addedToWLUnix = Number(source.added);
 }
 
 export function setAddedToWLFormatted(
     source: SteamWLRecGameData,
-    target: WLGameRec
+    target: WishlistGame
 ): void {
     const fullDate = new Date(Number(source.added) * 1000);
     const year = fullDate.getUTCFullYear().toString();
@@ -97,7 +100,7 @@ export function setAddedToWLFormatted(
 function constructWLElem(
     appidString: SteamWLRecGameID,
     rawData: SteamWLRecGameData
-): WLGameRec {
+): WishlistGame {
     const newElem = newWLGameRecTemplate();
 
     setAppid(appidString, newElem);
