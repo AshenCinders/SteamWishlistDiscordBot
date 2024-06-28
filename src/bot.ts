@@ -36,13 +36,14 @@ client.once(Events.ClientReady, () => {
 });
 client.login(process.env.TOKEN);
 
-type recordWithCommands = Record<string, Function>;
-const commandRec: recordWithCommands = {
+// Interaction handling.
+type interactionFunctionRec = Record<string, Function>;
+const commandRec: interactionFunctionRec = {
     ping: ping.execute,
     wishlist: wishlist.execute,
     clearmydata: clearMyData.execute,
 };
-const auxButtonRec: recordWithCommands = {
+const auxButtonRec: interactionFunctionRec = {
     myWL: onMyWLButton,
     elseWL: onElseWLButton,
     refetch: onRefetchButton,
@@ -55,13 +56,13 @@ async function handleInteraction(interaction: Interaction) {
             `User ${nameOfUser} pressed a button: ${interaction.customId}`
         );
         const btnFn =
-            auxButtonRec[interaction.customId as keyof recordWithCommands];
+            auxButtonRec[interaction.customId as keyof interactionFunctionRec];
         if (btnFn !== undefined) btnFn(interaction);
     } else if (interaction.isCommand()) {
         console.log(
             `User ${nameOfUser} used a command: ${interaction.commandName}`
         );
-        commandRec[interaction.commandName as keyof recordWithCommands](
+        commandRec[interaction.commandName as keyof interactionFunctionRec](
             interaction
         );
     } else return;
