@@ -3,7 +3,7 @@ import { dbGetWishlist, dbUpdateWishlist } from '../../database/mainDB';
 import { DBWishlistChunk } from '../../projectTypes';
 import {
     wlToMarkdownCustom,
-    getNewWishlistData,
+    fetchNewWishlist,
 } from '../../wishlists/mainWishlist';
 import { unixNow } from '../../lib/miscHelpers';
 
@@ -18,7 +18,7 @@ export async function onRefetchButton(interaction: ButtonInteraction) {
         return;
     }
     const givenID = fetchTuple[1].givenIdentifier;
-    const wlTuple = await getNewWishlistData(givenID);
+    const wlTuple = await fetchNewWishlist(givenID);
     if (wlTuple[0] === false) {
         await interaction.reply({
             content: 'Unable to get data from Steam, try again later.',

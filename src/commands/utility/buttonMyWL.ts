@@ -6,7 +6,7 @@ import {
 import { newWishlistModal, newRefetchButton } from './constructParts';
 import {
     isEligibleToRefetch,
-    getNewWishlistData,
+    fetchNewWishlist,
     wlToMarkdownCustom,
 } from '../../wishlists/mainWishlist';
 import { unixNow } from '../../lib/miscHelpers';
@@ -51,7 +51,7 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
                 `User ${nameOfUser} inputted steam identifier: ${textInput}`
             );
 
-            const wlTuple = await getNewWishlistData(textInput);
+            const wlTuple = await fetchNewWishlist(textInput);
             if (wlTuple[0] === false) {
                 console.log(
                     `Steam failed to find a wishlist from user ${nameOfUser}'s ID input`

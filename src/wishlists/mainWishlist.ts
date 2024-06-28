@@ -12,7 +12,7 @@ import {
     blue,
     cyan,
     green,
-    gray,
+    pink,
 } from '../lib/mdWrappers';
 import {
     unixNow,
@@ -34,36 +34,32 @@ export function isEligibleToRefetch(unixLastFetch: number): boolean {
  * Generates new user wishlist data from Steam.
  * @param userIdentifier is the discordID or steam64/custom name identifier
  *  for a user.
- * @returns A tuple of a boolean denoting outcome,
- *  and either a Wishlist,
- *  or a string explaining what caused the fetch to fail.
+ * @returns A MaybeWishlistTuple denoting outcome, with [1] containing either
+ *  a Wishlist, or a string explaining what caused the fetch to fail.
  */
-export async function getNewWishlistData(
+export async function fetchNewWishlist(
     userIdentifier: string
 ): Promise<MaybeWishlistTuple> {
-    const inputString = userIdentifier.toString();
-    if (!isValidString(inputString))
+    if (!isValidString(userIdentifier))
         return [false, "The input you've written is invalid."];
 
-    const result = await newWishlistRecord(inputString).then((fetchTuple) => {
-        // If failed, return tuple with fail string.
-        if (fetchTuple[0] === false) return fetchTuple;
+    const fetchTuple = await newWishlistRecord(userIdentifier);
+    // If failed, return tuple with fail string.
+    if (fetchTuple[0] === false) return fetchTuple;
 
-        const createdWL: Wishlist = constructWishlist(fetchTuple[1]);
-        return [true, createdWL];
-    });
-    return result as MaybeWishlistTuple;
+    const createdWishlist = constructWishlist(fetchTuple[1]);
+    return [true, createdWishlist];
 }
 
 /**
- * Constructs a string with markdown syntax for displaying a wishlist.
- * @param wl a wishlist of type Wishlist.
+ * Constructs a string with markdown syntax for displaying a Wishlist.
+ * @param wishlist of type Wishlist.
  * @param choiceRec an optional record of type StringifyWLChoices.
  *  Any property that is omitted will by default be set to false.
- * @returns a string with markdown syntax which will be under 2000 characters.
+ * @returns a string in markdown syntax under 2000 characters.
  */
 export function wlToMarkdownCustom(
-    wl: Wishlist,
+    wishlist: Wishlist,
     choiceRec?: StringifyWLChoices
 ): string {
     choiceRec ??= {};
@@ -73,49 +69,47 @@ export function wlToMarkdownCustom(
     choiceRec.showReleaseDateFormatted ??= false;
     choiceRec.showAddedToWLFormatted ??= false;
 
-    let fullString =
-        wl.length >= 99
-            ? 'This wishlist contains more than 99 games!\n'
-            : 'This wishlist contains ' + wl.length.toString() + ' games!\n';
-    fullString +=
-        italic('Here are as many as we can display in a message!') + '\n';
+    let result =
+        wishlist.length >= 99
+            ? `This wishlist contains more than 99 games!\n`
+            : `This wishlist contains ${wishlist.length.toString()} games!\n`;
+    result += italic('Here are as many as we can display in a message!') + '\n';
 
     // Each loop appends one game.
-    for (let i = 0; i < wl.length; i++) {
-        const game = wl[i];
+    for (let i = 0; i < wishlist.length; i++) {
+        const game = wishlist[i];
 
         let otherInfo = '';
         if (choiceRec.showTags === true) {
             const tagStr = stringArrayToString(game.tags);
-            otherInfo += cyan('Tags: ' + tagStr) + '\n';
+            otherInfo += cyan(`Tags: ${tagStr}`) + '\n';
         }
         if (choiceRec.showReviewGrade === true) {
-            otherInfo += blue('Review Score: ' + game.reviewGrade) + '\n';
+            otherInfo += blue(`Review Score: ${game.reviewGrade}`) + '\n';
         }
         if (choiceRec.showReleaseDateFormatted === true) {
             otherInfo +=
-                green('Release Date: ' + game.releaseDateFormatted) + '\n';
+                green(`Release Date: ${game.releaseDateFormatted}`) + '\n';
         }
         if (choiceRec.showAddedToWLFormatted === true) {
             otherInfo +=
-                gray(
-                    'Date when added to wishlist: ' + game.addedToWLFormatted
+                pink(
+                    `Date when added to wishlist: ${game.addedToWLFormatted}`
                 ) + '\n';
         }
 
-        // Needed for Discord message limit.
-        if (fullString.length + game.name.length + otherInfo.length >= 2000)
-            break;
+        // Check if 2000 character limit has been surpassed.
+        // (Required for simple Discord messages.)
+        if (result.length + game.name.length + otherInfo.length >= 2000) break;
 
-        fullString += bold(game.name) + '\n';
+        result += bold(game.name) + '\n';
         if (otherInfo !== '') {
             // Remove last newline char.
             otherInfo = delLastNewline(otherInfo);
             otherInfo = wrapColors(otherInfo);
-
-            fullString += otherInfo;
+            result += otherInfo;
         }
     }
 
-    return fullString;
+    return result;
 }

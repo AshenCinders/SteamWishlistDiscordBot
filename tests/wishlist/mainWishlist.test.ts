@@ -1,6 +1,6 @@
 import {
     isEligibleToRefetch,
-    getNewWishlistData,
+    fetchNewWishlist,
 } from '../../src/wishlists/mainWishlist';
 import { unixNow } from '../../src/lib/miscHelpers';
 import * as getDataModule from '../../src/wishlists/getWishlistData';
@@ -35,7 +35,7 @@ describe('outward-facing withlist generator from identifier', () => {
             return [false, 'should be unreachable'];
         });
 
-        const result = await getNewWishlistData('');
+        const result = await fetchNewWishlist('');
         expect(result[0]).toBe(false);
         expect(result[1]).toBe("The input you've written is invalid.");
     });
@@ -45,7 +45,7 @@ describe('outward-facing withlist generator from identifier', () => {
             return [false, 'fetch failed'];
         });
 
-        const result = await getNewWishlistData('testString');
+        const result = await fetchNewWishlist('testString');
         expect(result[0]).toBe(false);
         expect(result[1]).toBe('fetch failed');
     });
@@ -55,7 +55,7 @@ describe('outward-facing withlist generator from identifier', () => {
             return [true, rawWishlistData2];
         });
 
-        const result = (await getNewWishlistData('testString')) as [
+        const result = (await fetchNewWishlist('testString')) as [
             true,
             Wishlist,
         ];
