@@ -9,9 +9,9 @@ import * as ping from './commands/ping';
 import * as wishlist from './commands/wishlist';
 import * as clearMyData from './commands/clearMyData';
 // Utility interactions.
-import * as onMyWLButton from './commands/utility/onMyWLButton';
-import * as onElseWLButton from './commands/utility/onElseWLButton';
-import * as onRefetchButton from './commands/utility/onRefetchButton';
+import { onMyWLButton } from './commands/utility/buttonMyWL';
+import { onElseWLButton } from './commands/utility/buttonElseWL';
+import { onRefetchButton } from './commands/utility/buttonRefetch';
 
 // Connect to localhost mongodb.
 const url = 'mongodb://127.0.0.1:27017/wishlistbot';
@@ -43,9 +43,9 @@ const commandRec: recordWithCommands = {
     clearmydata: clearMyData.execute,
 };
 const auxButtonRec: recordWithCommands = {
-    myWL: onMyWLButton.execute,
-    elseWL: onElseWLButton.execute,
-    refetch: onRefetchButton.execute,
+    myWL: onMyWLButton,
+    elseWL: onElseWLButton,
+    refetch: onRefetchButton,
 };
 
 async function handleInteraction(interaction: Interaction) {

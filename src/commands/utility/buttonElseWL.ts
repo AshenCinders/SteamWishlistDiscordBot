@@ -10,7 +10,7 @@ import {
  * A fetch is sent out, if successful the wishlist gets discplayed to the user, else a fail message is shown.
  * @param interaction on pressing 'elsewl' button
  */
-export async function execute(interaction: ButtonInteraction) {
+export async function onElseWLButton(interaction: ButtonInteraction) {
     const nameOfUser = interaction.user.displayName;
     const wlModal = newWishlistModal();
     try {

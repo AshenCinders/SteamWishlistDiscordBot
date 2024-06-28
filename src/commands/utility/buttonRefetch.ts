@@ -7,7 +7,7 @@ import {
 } from '../../wishlists/mainWishlist';
 import { unixNow } from '../../lib/miscHelpers';
 
-export async function execute(interaction: ButtonInteraction) {
+export async function onRefetchButton(interaction: ButtonInteraction) {
     interaction.deferReply({ ephemeral: true });
     const fetchTuple = await dbGetWishlist(interaction.user.id);
     if (fetchTuple[0] === false) {

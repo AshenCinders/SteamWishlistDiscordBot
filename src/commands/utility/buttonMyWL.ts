@@ -18,7 +18,7 @@ import { DBWishlistChunk } from '../../projectTypes';
  * If the user is in DB or the fetch from identifier is successful, then the wishlist gets displayed to the user.
  * @param interaction on pressing 'mywl' button
  */
-export async function execute(interaction: ButtonInteraction) {
+export async function onMyWLButton(interaction: ButtonInteraction) {
     const nameOfUser = interaction.user.displayName;
     const autoChoices = {
         showTags: true,
