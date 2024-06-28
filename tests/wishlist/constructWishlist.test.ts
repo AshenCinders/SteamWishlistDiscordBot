@@ -1,6 +1,6 @@
 import {
     constructWishlist,
-    newWLGameRecTemplate,
+    wishlistGameTemplate,
     setAddedToWLUnix,
     setAddedToWLFormatted,
     setReleaseDateUnix,
@@ -12,8 +12,8 @@ import {
 } from '../mockData/rawWishlistData';
 
 describe('Edge cases and misc for Wishlist construction helpers', () => {
-    const firstNewWLElem = newWLGameRecTemplate();
-    const secondNewWLElem = newWLGameRecTemplate();
+    const firstNewWLElem = wishlistGameTemplate();
+    const secondNewWLElem = wishlistGameTemplate();
 
     test('element template has all required properties', () => {
         expect(firstNewWLElem).toHaveProperty('appid');

@@ -8,9 +8,9 @@ import {
 import { sortWishlist } from '../lib/sortArray';
 
 /**
- * @returns a new WLGameRec record with all properties as empty.
+ * @returns a new WishlistGame with all properties as empty.
  */
-export function newWLGameRecTemplate(): WishlistGame {
+export function wishlistGameTemplate(): WishlistGame {
     return {
         appid: 0,
         priority: 0,
@@ -24,12 +24,12 @@ export function newWLGameRecTemplate(): WishlistGame {
     };
 }
 
-// Setters for wishlist array elements
+// Setters for WishlistGame properties.
 
 /**
  * Sets appid (number) based on the appid key string from Steam.
- * @param appid raw key string for a wishlist game object fetched from Steam.
- * @param target the target WishlistArr element.
+ * @param appid raw key string for WishlistGame record fetched from Steam.
+ * @param target the WishlistGame.
  */
 function setAppid(appid: string, target: WishlistGame): void {
     target.appid = Number(appid);
@@ -71,7 +71,9 @@ export function setAddedToWLUnix(
 ): void {
     target.addedToWLUnix = Number(source.added);
 }
-
+/**
+ * Sets formatted date property on WishlistGame in yyyy-mm-dd format.
+ */
 export function setAddedToWLFormatted(
     source: RawWishlistGame,
     target: WishlistGame
@@ -89,41 +91,42 @@ export function setAddedToWLFormatted(
 }
 
 /**
- * Construction function for a new element in a wishlist array.
- * @param rawData is raw wishlist game data fetched from steam WL.
+ * Construction function for new WishlistGame.
+ * @param gameID is key for RawWishlistGame.
+ * @param rawGame is RawWishlistGame.
  *  It is the data for a single game.
- * @returns An element for a wishlist array.
+ * @returns A WishlistGame with values based on rawGame parameter.
  */
-function constructWLElem(
-    appidString: RawWishlistGameID,
-    rawData: RawWishlistGame
+function constructWishlistGame(
+    gameID: RawWishlistGameID,
+    rawGame: RawWishlistGame
 ): WishlistGame {
-    const newElem = newWLGameRecTemplate();
+    const newGame = wishlistGameTemplate();
 
-    setAppid(appidString, newElem);
-    setPriority(rawData, newElem);
-    setName(rawData, newElem);
-    setTags(rawData, newElem);
-    setReviewGrade(rawData, newElem);
-    setReleaseDateUnix(rawData, newElem);
-    setReleaseDateFormatted(rawData, newElem);
-    setAddedToWLUnix(rawData, newElem);
-    setAddedToWLFormatted(rawData, newElem);
+    setAppid(gameID, newGame);
+    setPriority(rawGame, newGame);
+    setName(rawGame, newGame);
+    setTags(rawGame, newGame);
+    setReviewGrade(rawGame, newGame);
+    setReleaseDateUnix(rawGame, newGame);
+    setReleaseDateFormatted(rawGame, newGame);
+    setAddedToWLUnix(rawGame, newGame);
+    setAddedToWLFormatted(rawGame, newGame);
 
-    return newElem;
+    return newGame;
 }
 
 /**
  * Creates a new Wishlist data structure.
- *  that is sorted based on user WL ranking priority.
- * @param wlFetchData is a JS object containing wishlist data from Steam.
- * @returns A Wishlist.
+ *  that is sorted based on user ranking priority.
+ * @param rawWishlist contains raw wishlist data from Steam.
+ * @returns A Wishlist based on rawWishlist parameter.
  */
-export function constructWishlist(wlFetchData: RawWishlist): Wishlist {
+export function constructWishlist(rawWishlist: RawWishlist): Wishlist {
     let newWishlist: Wishlist = [];
 
-    for (const gameKey in wlFetchData) {
-        newWishlist.push(constructWLElem(gameKey, wlFetchData[gameKey]));
+    for (const gameKey in rawWishlist) {
+        newWishlist.push(constructWishlistGame(gameKey, rawWishlist[gameKey]));
     }
 
     return sortWishlist(newWishlist);
