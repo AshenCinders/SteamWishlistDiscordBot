@@ -2,10 +2,10 @@
 
 // RAW STEAM DATA TYPES
 // Steam game ID which is a number in string form.
-export type SteamWLRecGameID = string;
+export type RawWishlistGameID = string;
 
 // Fields are predefined by Steam.
-export type SteamWLRecGameData = {
+export type RawWishlistGame = {
     name: string; // Game title.
     priority: number; // User/default priority list ordering.
     review_desc: string; // E.g. 'Mostly Positive'
@@ -27,8 +27,8 @@ export type SteamWLRecGameData = {
 };
 
 // Each entry represents a game.
-export type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
-export type MaybeRawWLTuple = [true, SteamWLRecord] | [false, string];
+export type RawWishlist = Record<RawWishlistGameID, RawWishlistGame>;
+export type MaybeRawWLTuple = [true, RawWishlist] | [false, string];
 
 // WISHLIST TYPES
 // For constructed Wishlists.

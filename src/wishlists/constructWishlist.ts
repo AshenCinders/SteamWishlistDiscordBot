@@ -1,7 +1,7 @@
 import {
-    SteamWLRecGameID,
-    SteamWLRecGameData,
-    SteamWLRecord,
+    RawWishlistGameID,
+    RawWishlistGame,
+    RawWishlist,
     WishlistGame,
     Wishlist,
 } from '../projectTypes';
@@ -35,48 +35,45 @@ function setAppid(appid: string, target: WishlistGame): void {
     target.appid = Number(appid);
 }
 
-function setPriority(source: SteamWLRecGameData, target: WishlistGame): void {
+function setPriority(source: RawWishlistGame, target: WishlistGame): void {
     target.priority = source.priority;
 }
 
-function setName(source: SteamWLRecGameData, target: WishlistGame): void {
+function setName(source: RawWishlistGame, target: WishlistGame): void {
     target.name = source.name;
 }
 
-function setTags(source: SteamWLRecGameData, target: WishlistGame): void {
+function setTags(source: RawWishlistGame, target: WishlistGame): void {
     target.tags = source.tags;
 }
 
-function setReviewGrade(
-    source: SteamWLRecGameData,
-    target: WishlistGame
-): void {
+function setReviewGrade(source: RawWishlistGame, target: WishlistGame): void {
     target.reviewGrade = source.review_desc;
 }
 
 export function setReleaseDateUnix(
-    source: SteamWLRecGameData,
+    source: RawWishlistGame,
     target: WishlistGame
 ): void {
     target.releaseDateUnix = Number(source.release_date.toString());
 }
 
 function setReleaseDateFormatted(
-    source: SteamWLRecGameData,
+    source: RawWishlistGame,
     target: WishlistGame
 ): void {
     target.releaseDateFormatted = source.release_string;
 }
 
 export function setAddedToWLUnix(
-    source: SteamWLRecGameData,
+    source: RawWishlistGame,
     target: WishlistGame
 ): void {
     target.addedToWLUnix = Number(source.added);
 }
 
 export function setAddedToWLFormatted(
-    source: SteamWLRecGameData,
+    source: RawWishlistGame,
     target: WishlistGame
 ): void {
     const fullDate = new Date(Number(source.added) * 1000);
@@ -98,8 +95,8 @@ export function setAddedToWLFormatted(
  * @returns An element for a wishlist array.
  */
 function constructWLElem(
-    appidString: SteamWLRecGameID,
-    rawData: SteamWLRecGameData
+    appidString: RawWishlistGameID,
+    rawData: RawWishlistGame
 ): WishlistGame {
     const newElem = newWLGameRecTemplate();
 
@@ -122,7 +119,7 @@ function constructWLElem(
  * @param wlFetchData is a JS object containing wishlist data from Steam.
  * @returns A Wishlist.
  */
-export function constructWishlist(wlFetchData: SteamWLRecord): Wishlist {
+export function constructWishlist(wlFetchData: RawWishlist): Wishlist {
     let newWishlist: Wishlist = [];
 
     for (const gameKey in wlFetchData) {

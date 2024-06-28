@@ -4,7 +4,7 @@
 // For further reading regarding SteamIDs:
 // https://developer.valvesoftware.com/wiki/SteamID
 
-import { SteamWLRecord, MaybeRawWLTuple } from '../projectTypes';
+import { RawWishlist, MaybeRawWLTuple } from '../projectTypes';
 
 /**
  * Takes a valid withlist API url and gets wishlist data from Steam.
@@ -33,7 +33,7 @@ export async function fetchFromSteam(url: string): Promise<MaybeRawWLTuple> {
         });
 
     try {
-        const testData = wishlistRecordTuple[1] as SteamWLRecord;
+        const testData = wishlistRecordTuple[1] as RawWishlist;
         const testGame = testData[Object.keys(testData)[0]];
         const testName = testGame.name;
         /* Fetch suceeded, but invalid data structure
