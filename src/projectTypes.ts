@@ -1,6 +1,6 @@
-// All exported types used by functions for wislists.
-// Excluding DB specific types.
+// All exported types used by various parts of the project.
 
+// RAW STEAM DATA TYPES
 // Steam game ID which is a number in string form.
 export type SteamWLRecGameID = string;
 
@@ -30,6 +30,7 @@ export type SteamWLRecGameData = {
 export type SteamWLRecord = Record<SteamWLRecGameID, SteamWLRecGameData>;
 export type RawMaybeWishlist = [true, SteamWLRecord] | [false, string];
 
+// WISHLIST TYPES
 // For constructed Wishlists.
 export type WLGameRec = {
     appid: number;
@@ -56,3 +57,12 @@ export type StringifyWLChoices = {
     showReleaseDateFormatted?: boolean;
     showAddedToWLFormatted?: boolean;
 };
+
+// DATABASE TYPES
+export type wishlistDBType = {
+    discordIdentifier: string;
+    givenIdentifier: string;
+    unixFetchedAt: number;
+    wishlistData: Wishlist;
+};
+export type DBMaybeWishlist = [true, wishlistDBType] | [false, string];

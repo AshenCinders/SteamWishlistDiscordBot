@@ -11,7 +11,7 @@ import {
 } from '../../wishlists/mainWishlist';
 import { unixNow } from '../../lib/miscHelpers';
 import { dbGetWishlist, dbUpdateWishlist } from '../../database/mainDB';
-import { wishlistDBType } from '../../database/dbTypes';
+import { wishlistDBType } from '../../projectTypes';
 
 /**
  * Interaction to view 'My wishlist'. If the user is not in DB, then they are prompted to write their identifier into a modal.

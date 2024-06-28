@@ -1,6 +1,6 @@
 import { ButtonInteraction } from 'discord.js';
 import { dbGetWishlist, dbUpdateWishlist } from '../../database/mainDB';
-import { wishlistDBType } from '../../database/dbTypes';
+import { wishlistDBType } from '../../projectTypes';
 import {
     wlToMarkdownCustom,
     getNewWishlistData,

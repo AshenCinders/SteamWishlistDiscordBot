@@ -1,4 +1,4 @@
-import { DBMaybeWishlist, wishlistDBType } from './dbTypes';
+import { DBMaybeWishlist, wishlistDBType } from '../projectTypes';
 import { BoolTuple } from '../projectTypes';
 import { WishlistModel } from './model/Wishlist';
 import { isValidString } from '../lib/miscHelpers';
