@@ -4,7 +4,7 @@ import {
 } from '../../src/wishlists/mainWishlist';
 import { unixNow } from '../../src/lib/miscHelpers';
 import * as getDataModule from '../../src/wishlists/getWishlistData';
-import { rawWishlistData2 } from '../mockData/rawWishlistData1';
+import { rawWishlistData2 } from '../mockData/rawWishlistData';
 import { Wishlist } from '../../src/wishlists/typesWishlist';
 
 describe('eligible to refetch wishlist data checker', () => {

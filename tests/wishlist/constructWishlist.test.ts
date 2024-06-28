@@ -9,7 +9,7 @@ import {
     rawWishlistGame1,
     rawWishlistGame2,
     rawWishlistData1,
-} from '../mockData/rawWishlistData1';
+} from '../mockData/rawWishlistData';
 
 describe('Edge cases and misc for Wishlist construction helpers', () => {
     const firstNewWLElem = newWLGameRecTemplate();

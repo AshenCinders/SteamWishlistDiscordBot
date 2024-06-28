@@ -5,7 +5,7 @@ import {
     newWishlistRecord,
     steamIdentifierToURL,
 } from '../../src/wishlists/getWishlistData';
-import { rawWishlistData2 } from '../mockData/rawWishlistData1';
+import { rawWishlistData2 } from '../mockData/rawWishlistData';
 
 // Input validation functions for raw data fetch fuctions.
 
