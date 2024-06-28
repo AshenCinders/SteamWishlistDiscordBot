@@ -8,7 +8,7 @@ import {
 import { unixNow } from '../../lib/miscHelpers';
 
 export async function onRefetchButton(interaction: ButtonInteraction) {
-    interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: true });
     const fetchTuple = await dbGetWishlist(interaction.user.id);
     if (fetchTuple[0] === false) {
         await interaction.reply({
