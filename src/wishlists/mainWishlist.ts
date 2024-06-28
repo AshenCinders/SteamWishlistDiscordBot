@@ -98,9 +98,11 @@ export function wlToMarkdownCustom(
                 ) + '\n';
         }
 
-        // Check if 2000 character limit has been surpassed.
-        // (Required for simple Discord messages.)
-        if (result.length + game.name.length + otherInfo.length >= 2000) break;
+        /* Check if 2000 character limit has been surpassed.
+        (Required for simple Discord messages.) */
+        // +25 is needed to offset wrapColors
+        if (result.length + game.name.length + otherInfo.length + 25 >= 2000)
+            break;
 
         result += bold(game.name) + '\n';
         if (otherInfo !== '') {
