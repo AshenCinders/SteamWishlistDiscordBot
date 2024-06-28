@@ -4,7 +4,7 @@
 // For further reading regarding SteamIDs:
 // https://developer.valvesoftware.com/wiki/SteamID
 
-import { SteamWLRecord, RawMaybeWishlist } from './typesWishlist';
+import { SteamWLRecord, RawMaybeWishlist } from '../projectTypes';
 
 /**
  * Takes a valid withlist API url and gets wishlist data from Steam.

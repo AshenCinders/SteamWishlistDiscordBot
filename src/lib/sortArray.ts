@@ -1,4 +1,4 @@
-import { WLGameRec, Wishlist } from '../wishlists/typesWishlist';
+import { WLGameRec, Wishlist } from '../projectTypes';
 
 // Abstracted function for performance.
 // Use quicksort for as interface to sort.

@@ -1,5 +1,5 @@
 import { DBMaybeWishlist, wishlistDBType } from './dbTypes';
-import { BoolTuple } from '../wishlists/typesWishlist';
+import { BoolTuple } from '../projectTypes';
 import { WishlistModel } from './model/Wishlist';
 import { isValidString } from '../lib/miscHelpers';
 

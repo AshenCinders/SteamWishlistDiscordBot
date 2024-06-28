@@ -4,7 +4,7 @@ import {
     SteamWLRecord,
     WLGameRec,
     Wishlist,
-} from './typesWishlist';
+} from '../projectTypes';
 import { sortWishlist } from '../lib/sortArray';
 
 /**

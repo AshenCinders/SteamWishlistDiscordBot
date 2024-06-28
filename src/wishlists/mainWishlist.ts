@@ -1,4 +1,4 @@
-import { Wishlist, MaybeWishlist, StringifyWLChoices } from './typesWishlist';
+import { Wishlist, MaybeWishlist, StringifyWLChoices } from '../projectTypes';
 import { constructWishlist } from './constructWishlist';
 import { newWishlistRecord } from './getWishlistData';
 import {
