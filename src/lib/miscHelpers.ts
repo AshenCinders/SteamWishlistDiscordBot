@@ -9,9 +9,9 @@ export function unixNow(): number {
 }
 
 /**
- * Rough check to avoid parsing long/empty strings.
- * @param str to be checked.
- * @returns true if 0 < length < 51, else false.
+ * Rough check to avoid long/empty strings.
+ * @param str can be any type.
+ * @returns true if 0 < length < 51, and is a string.
  */
 export function isValidString(str: any): str is string {
     return typeof str !== 'string'
@@ -24,9 +24,9 @@ export function isValidString(str: any): str is string {
 }
 
 /**
- * If a newline character exists at the end of input string str,
+ * If a newline character exists at the end of input string str
  *  it will then get removed.
- * Function does not require input str to have a newline at the end.
+ * Function does not require input string to have a newline at the end.
  * @param str is any string.
  * @returns str without a newline character at the end.
  */
