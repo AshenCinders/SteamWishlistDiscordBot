@@ -1,5 +1,8 @@
-import { DBMaybeWishlistChunkTuple, DBWishlistChunk } from '../projectTypes';
-import { OutcomeTuple } from '../projectTypes';
+import {
+    DBMaybeWishlistChunkTuple,
+    DBWishlistChunk,
+    OutcomeTuple,
+} from '../projectTypes';
 import { WishlistModel } from './model/Wishlist';
 import { isValidString } from '../lib/miscHelpers';
 
@@ -11,17 +14,17 @@ import { isValidString } from '../lib/miscHelpers';
  *  and [1] a information string.
  */
 export async function dbUpdateWishlist(
-    wl: DBWishlistChunk
+    wishlistChunk: DBWishlistChunk
 ): Promise<OutcomeTuple> {
     const queryFn =
         (await WishlistModel.exists({
-            discordIdentifier: wl.discordIdentifier,
+            discordIdentifier: wishlistChunk.discordIdentifier,
         })) !== null
             ? WishlistModel.updateOne.bind(WishlistModel)
             : WishlistModel.create.bind(WishlistModel);
 
     try {
-        await queryFn(wl);
+        await queryFn(wishlistChunk);
         return [true, 'DB save successful'];
     } catch (err) {
         console.log('DB save failed ', err);
@@ -38,18 +41,15 @@ export async function dbUpdateWishlist(
 export async function dbGetWishlist(
     discordID: string
 ): Promise<DBMaybeWishlistChunkTuple> {
-    /* Extra save check incase discord handles user inputs as anything other 
-    than a string. */
-    const inputString = discordID.toString();
-    if (!isValidString(inputString))
+    if (!isValidString(discordID))
         return [false, "The input you've written is invalid."];
 
-    const response = await WishlistModel.findOne({
-        discordIdentifier: inputString,
-    });
-    const data = JSON.parse(JSON.stringify(response));
-
     try {
+        const response = await WishlistModel.findOne({
+            discordIdentifier: discordID,
+        });
+        const data = JSON.parse(JSON.stringify(response));
+
         if (data === null || data === undefined)
             return [
                 false,
@@ -57,9 +57,7 @@ export async function dbGetWishlist(
             ];
         else return [true, data];
     } catch (err) {
-        console.log(
-            'A DB fetch attempt failed from user input: ' + inputString
-        );
+        console.log('A DB fetch attempt failed from user input: ' + discordID);
         console.log(err);
         return [false, 'Failed to get wishlist data from DB'];
     }
