@@ -9,6 +9,7 @@ import { unixNow } from '../../lib/miscHelpers';
 
 export async function onRefetchButton(interaction: ButtonInteraction) {
     await interaction.deferReply({ ephemeral: true });
+
     const fetchTuple = await dbGetWishlist(interaction.user.id);
     if (fetchTuple[0] === false) {
         await interaction.reply({
@@ -17,6 +18,7 @@ export async function onRefetchButton(interaction: ButtonInteraction) {
         });
         return;
     }
+
     const givenID = fetchTuple[1].givenIdentifier;
     const wlTuple = await fetchNewWishlist(givenID);
     if (wlTuple[0] === false) {
@@ -33,6 +35,7 @@ export async function onRefetchButton(interaction: ButtonInteraction) {
         showAddedToWLFormatted: true,
     };
     const displayStr = wlToMarkdownCustom(wlTuple[1], autoChoices);
+
     console.log(`Displayed a wishlist to user ${interaction.user.displayName}`);
     interaction.editReply({
         content: displayStr,
