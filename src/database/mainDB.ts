@@ -3,6 +3,13 @@ import { OutcomeTuple } from '../projectTypes';
 import { WishlistModel } from './model/Wishlist';
 import { isValidString } from '../lib/miscHelpers';
 
+/**
+ * Updates a DBWishlistChunk entry in DB,
+ *  or creates a new one if it does not already exist.
+ * @param wishlistChunk a DBWishlistChunk.
+ * @returns an OutcomeTuple with [0] a bool denoting success/fail,
+ *  and [1] a information string.
+ */
 export async function dbUpdateWishlist(
     wl: DBWishlistChunk
 ): Promise<OutcomeTuple> {
@@ -24,11 +31,9 @@ export async function dbUpdateWishlist(
 
 /**
  * Tries to fetch wishlist data from database.
- * @param userIdentifier is the discordID or steam64/custom name identifier
- *  for a user.
- * @returns A tuple of a boolean denoting outcome,
- *  and either a Wishlist,
- *  or a string explaining what caused the fetch to fail.
+ * @param discordID is the discordID for a user.
+ * @returns a DBMaybeWishlistChunkTuple, with [1] containing either
+ *  a DBWishlistChunk, or a string explaining what caused the fetch to fail.
  */
 export async function dbGetWishlist(
     discordID: string
@@ -60,6 +65,12 @@ export async function dbGetWishlist(
     }
 }
 
+/**
+ * Tries to delete wishlist data from database.
+ * @param discordID is the discordID for a user.
+ * @returns an OutcomeTuple with [0] a bool denoting success/fail,
+ *  and [1] an information string.
+ */
 export async function dbDeleteWishlist(
     discordID: string
 ): Promise<OutcomeTuple> {
