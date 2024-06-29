@@ -24,7 +24,7 @@ describe('eligible to refetch wishlist data checker', () => {
 
 describe('outward-facing withlist generator from identifier', () => {
     const getDataMock = jest
-        .spyOn(getDataModule, 'newWishlistRecord')
+        .spyOn(getDataModule, 'newRawWishlist')
         .mockImplementation(async (userInput: string) => {
             return [false, 'init mock'];
         });

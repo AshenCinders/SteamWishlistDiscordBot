@@ -4,52 +4,58 @@
 // For further reading regarding SteamIDs:
 // https://developer.valvesoftware.com/wiki/SteamID
 
-import { RawWishlist, MaybeRawWLTuple } from '../projectTypes';
+import { MaybeRawWLTuple } from '../projectTypes';
 
 /**
- * Takes a valid withlist API url and gets wishlist data from Steam.
- * @example const wishlist = fetchFromSteam('https://store.steampowered.com/wishlist/id/Nivq/wishlistdata/');
- *  returns a SteamWLRecord.
+ * Takes a valid wishlist API url and gets wishlist data from Steam.
+ * @example const wishlist = fetchWishlistFromSteam(
+ *  'https://store.steampowered.com/wishlist/id/SomeCustomName/wishlistdata/');
+ *  returns a MaybeRawWLTuple.
  * @param url is the correct link to get a user's Steam wishlist.
  * @precondition The url must be a valid fetch link, the account needn't exist.
- * @returns A tuple of a boolean denoting outcome,
- *  and either a Record containing game-ids with game-data records,
- *  or a string explaining what caused the failure.
+ * @returns A MaybeRawWLTuple, with [1] containing either
+ *  a RawWishlist, or a string explaining what caused the fetch to fail.
  */
-export async function fetchFromSteam(url: string): Promise<MaybeRawWLTuple> {
-    const wishlistRecordTuple = await fetch(url)
-        .then(async (res) => {
-            /* There is no success: true/false property as there is in 
-            specific game data response. It seems that the fetch limit is a 
-            lot higher than for specific game data. */
-            if (res.ok) {
-                const data = await res.json();
-                //console.log('Data from steam fetch: ', data);
-                return [true, data];
-            } else throw new Error();
-        })
-        .catch((err) => {
-            return [false, err];
-        });
+export async function fetchWishlistFromSteam(
+    url: string
+): Promise<MaybeRawWLTuple> {
+    const failString =
+        'Steam failed to return wishlist data.\n' +
+        '**You may have inputted an invalid account identifier**\n' +
+        'or the Steam fetch limit has been surpassed.';
+    let rawWishlistTuple: MaybeRawWLTuple | undefined;
 
+    /* There is no success: true/false property as there is in 
+    specific game data response. It seems that the fetch limit is a 
+    lot higher than for specific game data as well. */
     try {
-        const testData = wishlistRecordTuple[1] as RawWishlist;
-        const testGame = testData[Object.keys(testData)[0]];
-        const testName = testGame.name;
-        /* Fetch suceeded, but invalid data structure
-        This can occur for example if an empty page is accessed,
-        e.g. p=1 if the user has < 100 games in WL.*/
-        if (typeof testName !== 'string') throw new Error();
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            rawWishlistTuple = [true, data];
+        } else throw new Error();
     } catch (err) {
-        return [
-            false,
-            'Steam failed to return wishlist data.\n' +
-                '**You may have inputted an invalid account identifier**\n' +
-                'or the Steam fetch limit has been surpassed.',
-        ];
+        console.log('Steam fetch response is invalid');
+        return [false, failString];
     }
 
-    return wishlistRecordTuple as MaybeRawWLTuple;
+    // Extra check to determine if wishlist data was returned.
+    try {
+        /* Fetch suceeded, but invalid data structure
+        This can occur for example if the wishlist is empty
+        or the user does not exist*/
+        const testData = rawWishlistTuple[1];
+        const testGame = testData[Object.keys(testData)[0]];
+        if (typeof testGame.name !== 'string') throw new Error();
+    } catch (err) {
+        console.log(
+            'Steam fetch response is invalid, ' +
+                'OR the user has no games in their wishlist'
+        );
+        return [false, failString];
+    }
+
+    return rawWishlistTuple;
 }
 
 /**
@@ -61,9 +67,11 @@ export async function fetchFromSteam(url: string): Promise<MaybeRawWLTuple> {
  *  returns 'https://store.steampowered.com/wishlist/id/St4ck/wishlistdata/'
  * @param steam64OrUniqueName Either a steam64 in string form, or a
  *  unique identifier sometimes used by distinguished accounts such as 'St4ck'.
- * @param isSteam64 True if steam64OrUniqueName, false if unique name id.
- * @precondition steam64OrUniqueName must be a valid steam64 or ID format.
- * @returns a steam url string for fetching wishlist data.
+ * @param isSteam64 true if steam64OrUniqueName is a Steam64,
+ *  false if it is a custom URL name.
+ * @precondition steam64OrUniqueName must be a valid steam64 or
+ *  custom URL name format.
+ * @returns a URL string for fetching wishlist data from Steam.
  */
 export function steamIdentifierToURL(
     steam64OrUniqueName: string,
@@ -73,10 +81,11 @@ export function steamIdentifierToURL(
     isSteam64
         ? // Fetch only works if steam64 is combined with this prefix.
           (prefix = 'https://store.steampowered.com/wishlist/profiles/')
-        : // Fetch only works if cusom name such as 'St4ck' is combined with this prefix.
+        : // Fetch only works if custom name such as 'St4ck' is combined
+          // with this prefix.
           (prefix = 'https://store.steampowered.com/wishlist/id/');
 
-    return prefix + steam64OrUniqueName + '/wishlistdata/';
+    return `${prefix}${steam64OrUniqueName}/wishlistdata/`;
 }
 
 /**
@@ -94,13 +103,14 @@ export function isValidSteam64(inputString: string): boolean {
           : true;
 }
 
-/**Checks if a string has the correct form for a Steam custom URL name.
+/**
+ * Checks if a string has the correct form for a Steam custom URL name.
  * It does NOT look up of an account with the name exists.
  * @example isValidSteamUniqueID('St4ck'); returns true.
  * @param inputString from user.
  * @returns true if valid, false if invalid.
  */
-export function isValidSteamUniqueID(inputString: string): boolean {
+export function isValidSteamCustomID(inputString: string): boolean {
     return !/^[A-Za-z0-9_.~-]*$/.test(inputString)
         ? false
         : inputString.length < 3
@@ -111,19 +121,19 @@ export function isValidSteamUniqueID(inputString: string): boolean {
 }
 
 /**
- * Called when a new/updated Steam Wishlist is to be fetched.
- * @param userInput is the steam64/nameID string which may not be validated,
- *  but must be a string.
- * @returns A tuple of a boolean denoting outcome,
- *  and either a SteamWLRecord, or a string explaining what caused the failure.
+ * Called when a new/updated RawWishlist is to be fetched.
+ * @param userInput is the steam64/name from custom URL string,
+ *  which may not be validated, but must be a string.
+ * @returns a MaybeRawWLTuple, with [1] containing either a RawWishlist,
+ *  or a string explaining what caused fetch to fail.
  */
-export async function newWishlistRecord(
+export async function newRawWishlist(
     userInput: string
 ): Promise<MaybeRawWLTuple> {
     let validURL: string;
     if (isValidSteam64(userInput))
         validURL = steamIdentifierToURL(userInput, true);
-    else if (isValidSteamUniqueID(userInput))
+    else if (isValidSteamCustomID(userInput))
         validURL = steamIdentifierToURL(userInput, false);
     else
         return [
@@ -131,5 +141,5 @@ export async function newWishlistRecord(
             "The steam64 or custom name you've inputted is not valid.",
         ];
 
-    return fetchFromSteam(validURL);
+    return fetchWishlistFromSteam(validURL);
 }

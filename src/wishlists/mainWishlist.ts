@@ -4,7 +4,7 @@ import {
     StringifyWLChoices,
 } from '../projectTypes';
 import { constructWishlist } from './constructWishlist';
-import { newWishlistRecord } from './getWishlistData';
+import { newRawWishlist } from './getWishlistData';
 import {
     bold,
     italic,
@@ -43,7 +43,7 @@ export async function fetchNewWishlist(
     if (!isValidString(userIdentifier))
         return [false, "The input you've written is invalid."];
 
-    const fetchTuple = await newWishlistRecord(userIdentifier);
+    const fetchTuple = await newRawWishlist(userIdentifier);
     // If failed, return tuple with fail string.
     if (fetchTuple[0] === false) return fetchTuple;
 

@@ -1,8 +1,8 @@
 import {
-    fetchFromSteam,
+    fetchWishlistFromSteam,
     isValidSteam64,
-    isValidSteamUniqueID,
-    newWishlistRecord,
+    isValidSteamCustomID,
+    newRawWishlist,
     steamIdentifierToURL,
 } from '../../src/wishlists/getWishlistData';
 import { rawWishlistData2 } from '../mockData/rawWishlistData';
@@ -34,30 +34,30 @@ describe('steam64 validator', () => {
 
 describe('steam uniqueid from custom URL checker validator', () => {
     test('correctly validates string length', () => {
-        expect(isValidSteamUniqueID('AValidName')).toBe(true);
-        expect(isValidSteamUniqueID('')).toBe(false);
+        expect(isValidSteamCustomID('AValidName')).toBe(true);
+        expect(isValidSteamCustomID('')).toBe(false);
         expect(
-            isValidSteamUniqueID(
+            isValidSteamCustomID(
                 'toLongggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg'
             )
         ).toBe(false);
 
         // Edge cases
-        expect(isValidSteamUniqueID('aa')).toBe(false);
-        expect(isValidSteamUniqueID('aaa')).toBe(true);
-        expect(isValidSteamUniqueID('32charactersaaaaaaaaaaaaaaaaaaaa')).toBe(
+        expect(isValidSteamCustomID('aa')).toBe(false);
+        expect(isValidSteamCustomID('aaa')).toBe(true);
+        expect(isValidSteamCustomID('32charactersaaaaaaaaaaaaaaaaaaaa')).toBe(
             true
         );
-        expect(isValidSteamUniqueID('33charactersaaaaaaaaaaaaaaaaaaaaa')).toBe(
+        expect(isValidSteamCustomID('33charactersaaaaaaaaaaaaaaaaaaaaa')).toBe(
             false
         );
     });
 
     test('correctly validates allowed characters', () => {
-        expect(isValidSteamUniqueID('~-validCHARS257_.')).toBe(true);
-        expect(isValidSteamUniqueID('     ')).toBe(false);
-        expect(isValidSteamUniqueID("@this*is'not+allowed")).toBe(false);
-        expect(isValidSteamUniqueID('another!one?')).toBe(false);
+        expect(isValidSteamCustomID('~-validCHARS257_.')).toBe(true);
+        expect(isValidSteamCustomID('     ')).toBe(false);
+        expect(isValidSteamCustomID("@this*is'not+allowed")).toBe(false);
+        expect(isValidSteamCustomID('another!one?')).toBe(false);
     });
 });
 
@@ -95,7 +95,7 @@ describe('steam data fetch function handling invalid and valid responses', () =>
             json: () => Promise.resolve(rawWishlistData2),
         } as unknown as Response);
 
-        expect((await fetchFromSteam('teststring'))[0]).toBe(false);
+        expect((await fetchWishlistFromSteam('teststring'))[0]).toBe(false);
     });
 
     test('correctly for invalid nonexistent user URL', async () => {
@@ -104,7 +104,7 @@ describe('steam data fetch function handling invalid and valid responses', () =>
             json: () => Promise.resolve({ success: 2 }),
         } as unknown as Response);
 
-        expect((await fetchFromSteam('teststring'))[0]).toBe(false);
+        expect((await fetchWishlistFromSteam('teststring'))[0]).toBe(false);
     });
 
     test('correctly for misc error', async () => {
@@ -113,7 +113,7 @@ describe('steam data fetch function handling invalid and valid responses', () =>
             json: () => Promise.resolve([]),
         } as unknown as Response);
 
-        expect((await fetchFromSteam('teststring'))[0]).toBe(false);
+        expect((await fetchWishlistFromSteam('teststring'))[0]).toBe(false);
     });
 
     // Valid responses
@@ -123,7 +123,7 @@ describe('steam data fetch function handling invalid and valid responses', () =>
             json: () => Promise.resolve(rawWishlistData2),
         } as unknown as Response);
 
-        expect((await fetchFromSteam('teststring'))[0]).toBe(true);
+        expect((await fetchWishlistFromSteam('teststring'))[0]).toBe(true);
     });
 });
 
@@ -139,28 +139,26 @@ describe('steam identifier to wishlist data function is', () => {
     );
 
     test('correct for Steam64Ids', async () => {
-        expect((await newWishlistRecord('76561111111111111'))[0]).toBe(true);
-        expect((await newWishlistRecord('12345678901234567'))[0]).toBe(true);
+        expect((await newRawWishlist('76561111111111111'))[0]).toBe(true);
+        expect((await newRawWishlist('12345678901234567'))[0]).toBe(true);
     });
 
     test('correct for names in custom-URLs', async () => {
-        expect((await newWishlistRecord('Nivq'))[0]).toBe(true);
-        expect((await newWishlistRecord('ThisCouldBeAValidName56'))[0]).toBe(
-            true
-        );
+        expect((await newRawWishlist('Nivq'))[0]).toBe(true);
+        expect((await newRawWishlist('ThisCouldBeAValidName56'))[0]).toBe(true);
     });
 
     test('correct for other invalid user identifiers', async () => {
-        expect((await newWishlistRecord(''))[0]).toBe(false);
-        expect((await newWishlistRecord('ab'))[0]).toBe(false);
+        expect((await newRawWishlist(''))[0]).toBe(false);
+        expect((await newRawWishlist('ab'))[0]).toBe(false);
         expect(
             (
-                await newWishlistRecord(
+                await newRawWishlist(
                     'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooongname'
                 )
             )[0]
         ).toBe(false);
-        expect((await newWishlistRecord('some^^disallowedSymbols{¤'))[0]).toBe(
+        expect((await newRawWishlist('some^^disallowedSymbols{¤'))[0]).toBe(
             false
         );
     });
