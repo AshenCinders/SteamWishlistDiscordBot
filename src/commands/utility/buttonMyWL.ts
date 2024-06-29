@@ -33,52 +33,49 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
         console.log(fetchTuple[1]);
 
         const wlModal = newWishlistModal();
+        let modalSubmit: ModalSubmitInteraction | undefined;
         try {
             await interaction.showModal(wlModal);
             const filter = (interaction: ModalSubmitInteraction) =>
                 interaction.customId === 'idModal';
-            const modalInteraction = await interaction.awaitModalSubmit({
+            modalSubmit = await interaction.awaitModalSubmit({
                 filter,
                 time: 600_000,
             });
-            await modalInteraction.deferReply({
+            await modalSubmit.deferReply({
                 ephemeral: true,
             });
-
-            const textInput =
-                modalInteraction.fields.getTextInputValue('idText');
-            console.log(
-                `User ${nameOfUser} inputted steam identifier: ${textInput}`
-            );
-
-            const wlTuple = await fetchNewWishlist(textInput);
-            if (wlTuple[0] === false) {
-                console.log(
-                    `Steam failed to find a wishlist from user ${nameOfUser}'s ID input`
-                );
-                await modalInteraction.editReply({
-                    // Display reason why the fetch failed.
-                    content: wlTuple[1],
-                });
-            } else {
-                const displayStr = wlToMarkdownCustom(wlTuple[1], autoChoices);
-                console.log(`Displayed a wishlist to user ${nameOfUser}`);
-                await modalInteraction.editReply({
-                    content: displayStr,
-                });
-
-                // Store to DB
-                const dbWishlistData: DBWishlistChunk = {
-                    givenIdentifier: textInput,
-                    discordIdentifier: interaction.user.id,
-                    unixFetchedAt: unixNow(),
-                    wishlistData: wlTuple[1],
-                };
-                await dbUpdateWishlist(dbWishlistData);
-            }
         } catch (err) {
-            console.log(err);
+            // Submit timed out, stop interaction.
+            console.log('Wishlist modal timed out (my wishlist)');
             return;
+        }
+
+        const textInput = modalSubmit.fields.getTextInputValue('idText');
+        const wlTuple = await fetchNewWishlist(textInput);
+        if (wlTuple[0] === false) {
+            console.log(
+                `Steam failed to find a wishlist from user ${nameOfUser}'s ID input`
+            );
+            await modalSubmit.editReply({
+                // Display reason why the fetch failed.
+                content: wlTuple[1],
+            });
+        } else {
+            const displayStr = wlToMarkdownCustom(wlTuple[1], autoChoices);
+            console.log(`Displayed a wishlist to user ${nameOfUser}`);
+            await modalSubmit.editReply({
+                content: displayStr,
+            });
+
+            // Store to DB
+            const dbWishlistData: DBWishlistChunk = {
+                givenIdentifier: textInput,
+                discordIdentifier: interaction.user.id,
+                unixFetchedAt: unixNow(),
+                wishlistData: wlTuple[1],
+            };
+            await dbUpdateWishlist(dbWishlistData);
         }
     } else {
         // DB fetch attempt succeeded
@@ -100,7 +97,8 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
             ephemeral: true,
             components: [refetchButton],
         });
-
+        // CURRENTLY DOES NOT REMOVE MESSAGE
+        // Wait to see if user wants to refetch wishlist data.
         const collectorFilter = (i: Interaction) =>
             i.user.id === interaction.user.id;
         try {
@@ -112,6 +110,7 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
             interaction.deleteReply();
         } catch (err) {
             console.log('Option to refetch wishlist data timed out');
+            return;
         }
     }
 }
