@@ -22,6 +22,7 @@ import {
 export async function onElseWLButton(interaction: ButtonInteraction) {
     const nameOfUser = interaction.user.displayName;
 
+    // Show modal asking for ID.
     const wlModal = newWishlistModal();
     let modalSubmit: ModalSubmitInteraction;
     try {
@@ -53,6 +54,7 @@ export async function onElseWLButton(interaction: ButtonInteraction) {
         });
         return;
     } else {
+        // Display wishlist sequence.
         modalSubmit.deleteReply();
         console.log(`Displayed a wishlist to user ${nameOfUser}`);
         const response = await interaction.followUp({
