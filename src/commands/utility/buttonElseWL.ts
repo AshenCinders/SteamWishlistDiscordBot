@@ -3,7 +3,7 @@ import {
     ButtonInteraction,
     ModalSubmitInteraction,
 } from 'discord.js';
-import { newMoreDetailsButton, newWishlistModal } from './constructParts';
+import { newMoreDetailsRow, newWishlistModal } from './constructParts';
 import {
     fetchNewWishlist,
     wlToMarkdownCustom,
@@ -57,7 +57,7 @@ export async function onElseWLButton(interaction: ButtonInteraction) {
         console.log(`Displayed a wishlist to user ${nameOfUser}`);
         const response = await interaction.followUp({
             content: wlToMarkdownCustom(wlTuple[1]),
-            components: [newMoreDetailsButton()],
+            components: [newMoreDetailsRow()],
             fetchReply: true,
             ephemeral: true,
         });

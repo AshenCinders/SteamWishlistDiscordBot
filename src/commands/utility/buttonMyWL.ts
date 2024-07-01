@@ -5,8 +5,8 @@ import {
 } from 'discord.js';
 import {
     newWishlistModal,
-    newRefetchButton,
-    newMoreDetailsButton,
+    newRefetchRow,
+    newMoreDetailsRow,
 } from './constructParts';
 import {
     isEligibleToRefetch,
@@ -102,7 +102,7 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
         ? (wishlistTuple[1] as DBWishlistChunk).unixFetchedAt
         : unixNow();
     const refetchToDisabled = !isEligibleToRefetch(unixFetched);
-    const refetchButton = newRefetchButton(
+    const refetchRow = newRefetchRow(
         refetchToDisabled,
         'Update data (after 10min)'
     );
@@ -113,7 +113,7 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
     console.log(`Displayed a wishlist to user ${nameOfUser}`);
     const response = await replyVariant({
         content: wlToMarkdownCustom(wishlist),
-        components: [newMoreDetailsButton(), refetchButton],
+        components: [newMoreDetailsRow(), refetchRow],
         fetchReply: true,
         ephemeral: true,
     });

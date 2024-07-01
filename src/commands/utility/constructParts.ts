@@ -34,13 +34,13 @@ export function newWishlistModal(): ModalBuilder {
 }
 
 /**
- * Constructs a refetch button.
+ * Constructs a refetch button in an ActionRow.
  * @param isDisabled is a bool that decidides of the button
  *  should be unclickable.
  * @param label is the text displayed on the button.
- * @returns A discord button for refetching data.
+ * @returns An ActionrRow containing a discord button for refetching data.
  */
-export function newRefetchButton(
+export function newRefetchRow(
     isDisabled: boolean,
     label: string
 ): ActionRowBuilder<ButtonBuilder> {
@@ -54,10 +54,11 @@ export function newRefetchButton(
 }
 
 /**
- * Constructs a more details button.
- * @returns A discord button for showing more details of a wishlist.
+ * Constructs a more details button in an ActionRow.
+ * @returns An ActionrRow containing a discord button for showing
+ *  more details of a wishlist.
  */
-export function newMoreDetailsButton(): ActionRowBuilder<ButtonBuilder> {
+export function newMoreDetailsRow(): ActionRowBuilder<ButtonBuilder> {
     const buttonMore = new ButtonBuilder()
         .setCustomId('morewishlist')
         .setLabel('More Details')
