@@ -52,3 +52,15 @@ export function newRefetchButton(
 
     return new ActionRowBuilder<ButtonBuilder>().addComponents(buttonRefetch);
 }
+
+/**
+ * Constructs a more details button.
+ * @returns A discord button for showing more details of a wishlist.
+ */
+export function newMoreDetailsButton(): ActionRowBuilder<ButtonBuilder> {
+    const buttonMore = new ButtonBuilder()
+        .setCustomId('morewishlist')
+        .setLabel('More Details')
+        .setStyle(ButtonStyle.Primary);
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(buttonMore);
+}
