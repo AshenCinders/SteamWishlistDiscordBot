@@ -28,13 +28,7 @@ export async function onRefetchButton(interaction: ButtonInteraction) {
         return;
     }
 
-    const autoChoices = {
-        showTags: true,
-        showReviewGrade: true,
-        showReleaseDateFormatted: true,
-        showAddedToWLFormatted: true,
-    };
-    const displayStr = wlToMarkdownCustom(wlTuple[1], autoChoices);
+    const displayStr = wlToMarkdownCustom(wlTuple[1]);
 
     console.log(`Displayed a wishlist to user ${interaction.user.displayName}`);
     interaction.editReply({
