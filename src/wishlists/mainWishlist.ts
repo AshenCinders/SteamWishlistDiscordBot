@@ -93,9 +93,8 @@ export function wlToMarkdownCustom(
         }
         if (choiceRec.showAddedToWLFormatted === true) {
             otherInfo +=
-                pink(
-                    `Date when added to wishlist: ${game.addedToWLFormatted}`
-                ) + '\n';
+                pink(`Date added to wishlist: ${game.addedToWLFormatted}`) +
+                '\n';
         }
 
         /* Check if 2000 character limit has been surpassed.
