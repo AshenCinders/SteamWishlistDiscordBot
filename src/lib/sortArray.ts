@@ -1,7 +1,7 @@
 import { WishlistGame, Wishlist } from '../projectTypes';
 
 // Abstracted function for performance.
-// Use quicksort for as interface to sort.
+// Use quicksort as interface to sort.
 function quicksortInternal<T>(
     arr: Array<T>,
     sortCond: (array: Array<T>, index: number, pivot: T) => boolean,
