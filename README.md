@@ -10,15 +10,18 @@ Keep in mind that Discord limits messages to 2000 characters, so some games may 
 
 The bot is normally run using ts-node (npm run start) and will connect to a local-host MongoDB instance which is automatically created.
 It can also be started by running the bot.ts/js file if you compile/transpile another way.
-You will need a .env file containing CLIENTID, SERVERID, TOKEN generated when registering the bot through the Discord Developer Portal.
+
+You will need a .env file containing CLIENTID, SERVERID, TOKEN. The TOKEN is gotten from registering the bot through the Discord Developer Portal.
 Place the .env file in the project folder.
+
 Before starting up the bot you also need to push the commands to Discord, by running 'npm run push' or running the deploy-commands.ts file.
 
 
 If you plan on forking and editing the code you may want to add the following Prettier settings:
-    Quote Props: preserve
-    Single Quote: on
-    Tab Width: 4 spaces
+    Quote Props: preserve,
+    Single Quote: on,
+    Tab Width: 4 spaces.
+
 If you want to run the tests you may need to add to your TSconfig:
 ```ts
 "compilerOptions": {
