@@ -115,3 +115,20 @@ export function wlToMarkdownCustom(
 
     return result;
 }
+
+/**
+ * Shortcut alias to wlToMarkdownCustom with all choices as true.
+ * Constructs a string with markdown syntax for displaying a Wishlist
+ *  with all allowed details being included.
+ * @param wishlist of type Wishlist.
+ * @returns a string in markdown syntax under 2000 characters.
+ */
+export function wlToMarkdownFull(wishlist: Wishlist): string {
+    const fullChoices = {
+        showTags: true,
+        showReviewGrade: true,
+        showReleaseDateFormatted: true,
+        showAddedToWLFormatted: true,
+    };
+    return wlToMarkdownCustom(wishlist, fullChoices);
+}
