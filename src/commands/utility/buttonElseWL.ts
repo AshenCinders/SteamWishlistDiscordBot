@@ -1,20 +1,29 @@
-import { ButtonInteraction, ModalSubmitInteraction } from 'discord.js';
-import { newWishlistModal } from './constructParts';
+import {
+    Interaction,
+    ButtonInteraction,
+    ModalSubmitInteraction,
+} from 'discord.js';
+import { newMoreDetailsButton, newWishlistModal } from './constructParts';
 import {
     fetchNewWishlist,
     wlToMarkdownCustom,
+    wlToMarkdownFull,
 } from '../../wishlists/mainWishlist';
 
 /**
- * Interaction to view 'Someone else's wishlist'. The user gets prompted to input the identifier for the account's wishlist they wish to see.
- * A fetch is sent out, if successful the wishlist gets discplayed to the user, else a fail message is shown.
+ * Interaction to view 'Someone else's wishlist'.
+ * The user gets prompted to input the identifier for the
+ *  account's wishlist they want to see.
+ * A fetch is sent out, if successful the wishlist gets discplayed to the user,
+ *  else a fail message is shown.
+ * On success the user can also view more details for that wishlist.
  * @param interaction on pressing 'elsewl' button
  */
 export async function onElseWLButton(interaction: ButtonInteraction) {
     const nameOfUser = interaction.user.displayName;
 
     const wlModal = newWishlistModal();
-    let modalSubmit: ModalSubmitInteraction | undefined;
+    let modalSubmit: ModalSubmitInteraction;
     try {
         await interaction.showModal(wlModal);
         const filter = (interaction: ModalSubmitInteraction) =>
@@ -42,11 +51,35 @@ export async function onElseWLButton(interaction: ButtonInteraction) {
             // Display reason why the fetch failed.
             content: wlTuple[1],
         });
+        return;
     } else {
-        const displayStr = wlToMarkdownCustom(wlTuple[1]);
+        modalSubmit.deleteReply();
         console.log(`Displayed a wishlist to user ${nameOfUser}`);
-        await modalSubmit.editReply({
-            content: displayStr,
+        const response = await interaction.followUp({
+            content: wlToMarkdownCustom(wlTuple[1]),
+            components: [newMoreDetailsButton()],
+            fetchReply: true,
+            ephemeral: true,
         });
+
+        // Wait to see if user wants to display details.
+        const collectorFilter = (newInteraction: Interaction) =>
+            newInteraction.user.id === interaction.user.id;
+        try {
+            const btnInteraction = await response.awaitMessageComponent({
+                filter: collectorFilter,
+                time: 60_000,
+            });
+
+            if (btnInteraction.customId === 'morewishlist') {
+                btnInteraction.reply({
+                    ephemeral: true,
+                    content: wlToMarkdownFull(wlTuple[1]),
+                });
+            }
+        } catch (err) {
+            console.log('Option display more details timed out');
+            return;
+        }
     }
 }
