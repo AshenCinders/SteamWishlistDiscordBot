@@ -23,7 +23,7 @@ export async function fetchWishlistFromSteam(
         'Steam failed to return wishlist data.\n' +
         '**You may have inputted an invalid account identifier**\n' +
         'or the Steam fetch limit has been surpassed.';
-    let rawWishlistTuple: MaybeRawWLTuple | undefined;
+    let rawWishlistTuple: MaybeRawWLTuple;
 
     /* There is no success: true/false property as there is in 
     specific game data response. It seems that the fetch limit is a 
