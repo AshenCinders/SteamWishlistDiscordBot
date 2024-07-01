@@ -3,35 +3,48 @@ import {
     ButtonInteraction,
     ModalSubmitInteraction,
 } from 'discord.js';
-import { newWishlistModal, newRefetchButton } from './constructParts';
+import {
+    newWishlistModal,
+    newRefetchButton,
+    newMoreDetailsButton,
+} from './constructParts';
 import {
     isEligibleToRefetch,
     fetchNewWishlist,
     wlToMarkdownCustom,
+    wlToMarkdownFull,
 } from '../../wishlists/mainWishlist';
 import { unixNow } from '../../lib/miscHelpers';
 import { dbGetWishlist, dbUpdateWishlist } from '../../database/mainDB';
-import { DBWishlistChunk } from '../../projectTypes';
+import {
+    DBMaybeWishlistChunkTuple,
+    DBWishlistChunk,
+    MaybeWishlistTuple,
+    Wishlist,
+} from '../../projectTypes';
 
 /**
- * Interaction to view 'My wishlist'. If the user is not in DB, then they are prompted to write their identifier into a modal.
- * If the user is in DB or the fetch from identifier is successful, then the wishlist gets displayed to the user.
+ * Interaction to view 'My wishlist'. If the user is not in DB,
+ *  then they are prompted to write their identifier into a modal.
+ * If the user is in DB or the fetch from identifier is successful,
+ *  then the wishlist gets displayed to the user.
+ * There is also options to refetch wishlist data or to display more details.
  * @param interaction on pressing 'mywl' button
  */
 export async function onMyWLButton(interaction: ButtonInteraction) {
     const nameOfUser = interaction.user.displayName;
-    const autoChoices = {
-        showTags: true,
-        showReviewGrade: true,
-        showReleaseDateFormatted: true,
-        showAddedToWLFormatted: true,
-    };
+    let wishlist: Wishlist;
+    let dataIsFromDB: boolean;
 
-    const fetchTuple = await dbGetWishlist(interaction.user.id);
-    if (fetchTuple[0] === false) {
+    let wishlistTuple: DBMaybeWishlistChunkTuple | MaybeWishlistTuple =
+        await dbGetWishlist(interaction.user.id);
+
+    if (wishlistTuple[0] === false) {
         // DB fetch attempt failed. Prompt user for id
-        console.log(fetchTuple[1]);
+        dataIsFromDB = false;
+        console.log(wishlistTuple[1]);
 
+        // Prompt user with a modal.
         const wlModal = newWishlistModal();
         let modalSubmit: ModalSubmitInteraction | undefined;
         try {
@@ -51,66 +64,84 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
             return;
         }
 
+        // If user submitted in time, run new wishlist sequence.
         const textInput = modalSubmit.fields.getTextInputValue('idText');
-        const wlTuple = await fetchNewWishlist(textInput);
-        if (wlTuple[0] === false) {
+        wishlistTuple = await fetchNewWishlist(textInput);
+        if (wishlistTuple[0] === false) {
             console.log(
                 `Steam failed to find a wishlist from user ${nameOfUser}'s ID input`
             );
             await modalSubmit.editReply({
                 // Display reason why the fetch failed.
-                content: wlTuple[1],
+                content: wishlistTuple[1],
             });
+            return;
         } else {
-            const displayStr = wlToMarkdownCustom(wlTuple[1], autoChoices);
-            console.log(`Displayed a wishlist to user ${nameOfUser}`);
-            await modalSubmit.editReply({
-                content: displayStr,
-            });
-
+            wishlist = wishlistTuple[1];
             // Store to DB
             const dbWishlistData: DBWishlistChunk = {
                 givenIdentifier: textInput,
                 discordIdentifier: interaction.user.id,
                 unixFetchedAt: unixNow(),
-                wishlistData: wlTuple[1],
+                wishlistData: wishlist,
             };
-            await dbUpdateWishlist(dbWishlistData);
+            dbUpdateWishlist(dbWishlistData);
+            await modalSubmit.deleteReply();
+
+            // Continue and display to user.
         }
     } else {
         // DB fetch attempt succeeded
+        dataIsFromDB = true;
         console.log(`${nameOfUser}'s wishlist was found in DB`);
+        wishlist = wishlistTuple[1].wishlistData;
+    }
 
-        const wishlist = fetchTuple[1].wishlistData;
-        const displayStr = wlToMarkdownCustom(wishlist, autoChoices);
+    // Display wishlist sequence.
+    const unixFetched = dataIsFromDB
+        ? (wishlistTuple[1] as DBWishlistChunk).unixFetchedAt
+        : unixNow();
+    const refetchToDisabled = !isEligibleToRefetch(unixFetched);
+    const refetchButton = newRefetchButton(
+        refetchToDisabled,
+        'Update data (after 10min)'
+    );
 
-        let disableButton = isEligibleToRefetch(fetchTuple[1].unixFetchedAt)
-            ? false
-            : true;
-        const refetchButton = newRefetchButton(
-            disableButton,
-            'Update data (after 10min)'
-        );
-        console.log(`Displayed a wishlist to user ${nameOfUser}`);
-        const response = await interaction.reply({
-            content: displayStr,
-            ephemeral: true,
-            components: [refetchButton],
+    const replyVariant = dataIsFromDB
+        ? interaction.reply.bind(interaction)
+        : interaction.followUp.bind(interaction);
+    console.log(`Displayed a wishlist to user ${nameOfUser}`);
+    const response = await replyVariant({
+        content: wlToMarkdownCustom(wishlist),
+        components: [newMoreDetailsButton(), refetchButton],
+        fetchReply: true,
+        ephemeral: true,
+    });
+
+    // Wait to see if user wants to refetch wishlist data or display details.
+    const collectorFilter = (newInteraction: Interaction) =>
+        newInteraction.user.id === interaction.user.id;
+    try {
+        const btnInteraction = await response.awaitMessageComponent({
+            filter: collectorFilter,
+            time: 60_000,
         });
-        // CURRENTLY DOES NOT REMOVE MESSAGE
-        // Wait to see if user wants to refetch wishlist data.
-        const collectorFilter = (i: Interaction) =>
-            i.user.id === interaction.user.id;
-        try {
-            await response.awaitMessageComponent({
-                filter: collectorFilter,
-                time: 60_000,
-            });
-            // Once user clicks button, remove this interaction message.
+
+        if (btnInteraction.customId === 'refetch') {
+            // Once user clicks refetch, remove this interaction message.
+            // Handle in separate interaction file.
             interaction.deleteReply();
-        } catch (err) {
-            console.log('Option to refetch wishlist data timed out');
-            return;
+        } else if (btnInteraction.customId === 'morewishlist') {
+            btnInteraction.reply({
+                ephemeral: true,
+                content: wlToMarkdownFull(wishlist),
+            });
+            // Clear buttons
+            // Will crash if last reply is a followup.
+            if (dataIsFromDB) interaction.editReply({ components: [] });
         }
+    } catch (err) {
+        console.log('Option to refetch or display more details timed out');
+        return;
     }
 }
