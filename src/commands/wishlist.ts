@@ -35,6 +35,7 @@ export async function execute(interaction: CommandInteraction) {
                 buttonElse
             ),
         ],
+        fetchReply: true,
     });
 
     // Handle interaction in another file through bot event handler.
