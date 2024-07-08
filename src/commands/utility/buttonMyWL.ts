@@ -101,9 +101,9 @@ export async function onMyWLButton(interaction: ButtonInteraction) {
     const unixFetched = dataIsFromDB
         ? (wishlistTuple[1] as DBWishlistChunk).unixFetchedAt
         : unixNow();
-    const refetchToDisabled = !isEligibleToRefetch(unixFetched);
+    const refetchAsDisabled = !isEligibleToRefetch(unixFetched);
     const refetchRow = newRefetchRow(
-        refetchToDisabled,
+        refetchAsDisabled,
         'Update data (after 10min)'
     );
 
